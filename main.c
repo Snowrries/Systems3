@@ -5,6 +5,73 @@
  *      Author: Anthony
  */
 #include "indexer.h"
+/* 	Try to open the const *char as a simlink, then directory, 
+	then file if both attempts failed. Use errno judiciously.
+	Returns 0 if failure.
+	*/
+	
+int dirTrav(const char *fds, RadixPtr *burlapSack){
+	DIR *a;
+	struct dirent *c;
+	FILE *b;
+	char *desu;
+	size_t bufflen;
+	bufflen = 30;
+	desu = malloc(bufflen*sizeof(char));
+	if(readlink(fds, desu, bufflen)!= -1){
+		
+		/*It's a symlink!*/
+		while(bufflen == readlink(fds, desu, bufflen)){
+			bufflen += 10;
+		}
+		
+		dirTrav(desu, burlapSack);
+	}
+	if(errno == EACCES){
+		printf("File permissions insufficient.");
+		return 0;
+	}
+	else if(errno == ENOENT){
+		printf("Uhoh, the file's gone. Please check inputted filename and question file's existentiality.");
+		return 0;
+	}
+	//In other cases, it's just plainly not a simlink. 
+
+	a = opendir(fds);
+	if(a == NULL){
+		if(errno == ENOTDIR){//Not simlink? Not Dir? We'll assume it's a file.
+			b = fopen(fds,r);
+			
+			
+			/*Tokenize and index. Onegai.*/
+			
+			
+		}
+		else if(errno == EACCES){
+			printf("You haven't the permissions to access this directory.");
+		}
+		else if(errno == EMFILE){
+			printf("The process has too many files open. Consider gastric bypass.");
+		}
+		else if(errno == ENOMEM){
+			printf("Not enough memory... ? What's got your ram in a bunch?")
+		}
+		
+	}
+	//So it is a directory! Let's iterate through and recurse everything we find.
+	while((c=readdir(a))!= NULL{
+		dirTrav(c->d_name, burlapSack);
+	}
+	//End of journey. Go back to previous frame.
+	free(desu);
+	return 0;
+	
+}
+
+
+
+
+
 int main(int argc, char** argv){
 	if(argc !=3){
 		printf("Invalid Numbers of Arguments");
@@ -12,9 +79,12 @@ int main(int argc, char** argv){
 	}
 	char userinput[32];
 	if(access(argv[1], F_OK) != -1){
-		printf("The file already exists.  Would you like to overwrite? (Yes or No)");
+		printf("The file already exists.  Would you like to overwrite? (Yes or No)\n");
 		scanf("%s", userinput);
-
+	while((userinput != "Yes") && (userinput !="No")){
+		printf("Sorry, didn't quite catch that. Please enter Yes or No.\n");
+		scanf("%s", userinput);
+	}
 	if(strcmp(userinput,"No") == 0 ){
 		printf("Exiting \n");
 		return 0;
@@ -23,13 +93,14 @@ int main(int argc, char** argv){
 		printf("Cannot write to file.");
 		return 0;
 	}
+
 	printf("File will be overwritten");
 	}
 	if(access(argv[2], F_OK) == -1){
 		printf("File or Directory does not exist");
 		return 0;
 	}
-
+	
 	return 0;
 
 }
