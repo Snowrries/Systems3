@@ -62,22 +62,3 @@ void freedom(hash hashtable, int size){
 }
 
 
-int main(int argc, char** argv) {
-	size_t add;
-	hash kira;
-	FILE* fire;
-	if(argc != 2){
-		printf("Incorrect number of inputs.");
-		return 0;
-	}
-	kira = HashCreate(1000);
-	fire = fopen(argv[1],"r");
-	
-	while(fscanf(fire,"%zx",&add)!=EOF){
-		AddValue(add,kira);
-	}
-	fclose(fire);
-    printf ("%d\n",kira->rc);
-	freedom(kira, 1000);
-    return 0;
-}

@@ -7,6 +7,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <ctype.h>
+#include "count.h"
 #include "tokenizer.c"
 
 
@@ -17,9 +18,7 @@ struct input{
 	int used;
 };
 
-struct token{
 
-};
 
 struct object{
 	char* file;
@@ -27,7 +26,7 @@ struct object{
 
 };
 
-struct tokens{
+struct hash{
 	char* key;
 	struct object* object;
 
@@ -37,8 +36,13 @@ void resetinput(struct input *, int);
 
 char readinput(struct input*);
 
-int isBinary(char*);
 
+void inserttoken(char*path, struct hash **tokenee,char* word);
+
+
+void tokenizer(char* path, struct hash **hashslingslasher);
+
+int CompareStrings(void* , void*);
 //Hashtable stuff somewhere here
 
 

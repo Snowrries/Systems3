@@ -7,6 +7,9 @@
 
 #include "indexer.h"
 
+
+
+
 void resetinput(struct input *iptr, int fd){
 	iptr->fd = fd;
 	iptr->used =0;
@@ -33,8 +36,49 @@ else if ( iptr->length == iptr->used){
 else{
 	c= iptr->buffer[0];
 	iptr->used =1;
-	return c;
+	return tolower(c);
 }
 
 return 0;
 }
+
+
+/*
+void tokenizer(char *path, struct hash **hasher){
+	FILE *file = fopen(path, 'r');
+	if (file == NULL){
+		return;
+	}
+	int wordLength = 25;
+	char* token = (char*) malloc((wordLength+1) * sizeof(char));
+	struct input *inputs = (struct input*)malloc sizeof(struct input);
+	if(inputs == NULL){
+		return;
+	}
+	char c;
+	int fd;
+	fd = fileno(file);
+	inputs->fd = fd;
+	inputs->length=0;
+	inputs->used=0;
+	int i = 0;
+	c = readInput(inputs);
+	while(!isalnum(c)){
+		c = readINput(inputs);
+		if(c == -1){
+			free(token);
+			free(inputs);
+			fclose(file);
+			return;
+		}
+	}
+
+}
+*/
+
+int CompareStrings(void* a, void* b){
+
+
+	return 0;
+}
+
