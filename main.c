@@ -33,4 +33,75 @@ int main(int argc, char** argv){
 	return 0;
 
 }
+/*#include <stdio.h>
+#include <sys/types.h>
+#include <dirent.h>
+int
+main (void)
+{
+  DIR *dp;
+  struct dirent *ep;
 
+  dp = opendir ("./");
+  if (dp != NULL)
+    {
+      while (ep = readdir (dp))
+        puts (ep->d_name);
+      (void) closedir (dp);
+    }
+  else
+    perror ("Couldn't open the directory");
+
+  return 0;
+}
+
+
+#include <stdio.h>
+#include <dirent.h>
+static int
+one (const struct dirent *unused)
+{
+  return 1;
+}
+
+int
+main (void)
+{
+  struct dirent **eps;
+  int n;
+
+  n = scandir ("./", &eps, one, alphasort);
+  if (n >= 0)
+    {
+      int cnt;
+      for (cnt = 0; cnt < n; ++cnt)
+        puts (eps[cnt]->d_name);
+    }
+  else
+    perror ("Couldn't open the directory");
+
+  return 0;
+}
+
+
+char *
+readlink_malloc (const char *filename)
+{
+  int size = 100;
+  char *buffer = NULL;
+
+  while (1)
+    {
+      buffer = (char *) xrealloc (buffer, size);
+      int nchars = readlink (filename, buffer, size);
+      if (nchars < 0)
+        {
+          free (buffer);
+          return NULL;
+        }
+      if (nchars < size)
+        return buffer;
+      size *= 2;
+    }
+}
+*/
