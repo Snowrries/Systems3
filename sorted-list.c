@@ -17,6 +17,9 @@ SortedListPtr SLCreate(CompareFuncT cf, DestructFuncT df){
 
 void SLDestroy(SortedListPtr list){
 	//Destroy the list
+	if(list == NULL){
+		return;
+	}
 	while(list->Headptr != NULL){
 		//NodePtr NodetoDelete = malloc(sizeof(NodePtr));
 		NodePtr NodetoDelete;
@@ -91,7 +94,7 @@ int SLInsert(SortedListPtr list, void *newObj){
 
 		Comparator = SLGetItem(Iter);
 
-		while(list->Compare(Comparator, newObj) > 0 && Comparator != NULL){ //If the compare function returns >0 means if newObj is less than or equal to compared object (List is ordered from largest to smallest
+		while(list->Compare(Comparator, newObj) < 0 && Comparator != NULL){ //If the compare function returns >0 means if newObj is less than or equal to compared object (List is ordered from largest to smallest
 			prevNode = Iter->Node;
 			Comparator = SLNextItem(Iter);
 

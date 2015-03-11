@@ -9,7 +9,8 @@
 #include <ctype.h>
 #include "count.h"
 #include "tokenizer.c"
-
+#include "RadixTree.h"
+#include "sorted-list.h"
 
 struct input{
 	int fd;
@@ -26,23 +27,21 @@ struct object{
 
 };
 
-struct hash{
-	char* key;
-	struct object* object;
-
-};
+typedef struct object* FrqPathPtr;
 
 void resetinput(struct input *, int);
 
 char readinput(struct input*);
 
 
-void inserttoken(char*path, struct hash **tokenee,char* word);
+void InsertStringtoTree(RadixPtr,struct object*);
 
 
 void tokenizer(char* path, struct hash **hashslingslasher);
 
 int CompareStrings(void* , void*);
+
+void Destruct(void* a);
 //Hashtable stuff somewhere here
 
 

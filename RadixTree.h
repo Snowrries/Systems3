@@ -8,26 +8,42 @@
 #ifndef RADIXTREE_H_
 #define RADIXTREE_H_
 
+#include"sorted-list.h"
 #include <stdio.h>
+#include <string.h>
 
 struct RadixNode{
 
 	char* string;
 	int len;
-	RadixPtr Next;
-	RadixPtr Child;
+	SortedListPtr Index;
+	struct RadixNode *Child;
+	struct RadixNode *Next;
+	struct RadixNode * Parent;
 };
+
+
 
 typedef struct RadixNode* RadixPtr;
 
-void RadNodeCreate(char*,int);
+RadixPtr RadNodeCreate(char*,int);
 
-void MakeLikeATree(); //and leaf
+RadixPtr MakeLikeATree(); //and leaf
+
+SortedListPtr InsertToken(RadixPtr,RadixPtr);
+
+int PrefixFinder(char *,char*,int,int);
+
+int CompareNodes(RadixPtr,RadixPtr);
+
+void TreeDestruct();
 
 
-int prefix(char *,char*,int,int);
+void PreorderTraverse();
 
-RadixPtr* search(RadixPtr,char*,int n);
+void NodeCutter(RadixPtr,int);
+
+SortedListPtr InsertLocator(RadixPtr,RadixPtr,char*);
 
 
 #endif /* RADIXTREE_H_ */

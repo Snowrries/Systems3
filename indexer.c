@@ -43,42 +43,27 @@ return 0;
 }
 
 
-/*
-void tokenizer(char *path, struct hash **hasher){
-	FILE *file = fopen(path, 'r');
-	if (file == NULL){
-		return;
-	}
-	int wordLength = 25;
-	char* token = (char*) malloc((wordLength+1) * sizeof(char));
-	struct input *inputs = (struct input*)malloc sizeof(struct input);
-	if(inputs == NULL){
-		return;
-	}
-	char c;
-	int fd;
-	fd = fileno(file);
-	inputs->fd = fd;
-	inputs->length=0;
-	inputs->used=0;
-	int i = 0;
-	c = readInput(inputs);
-	while(!isalnum(c)){
-		c = readINput(inputs);
-		if(c == -1){
-			free(token);
-			free(inputs);
-			fclose(file);
-			return;
-		}
-	}
-
-}
-*/
 
 int CompareStrings(void* a, void* b){
+	FrqPathPtr First = (FrqPathPtr) a;
+	FrqPathPtr Second = (FrqPathPtr) b;
+	if(First->frequency > Second->frequency){
+		return 1;
+	}
+	else if(First->frequency == Second->frequency){
+		return strcmp(First->file,Second->file);
+	}
+	return -1;
+}
+
+void Destruct(void* a){
+	free(a);
+}
 
 
-	return 0;
+void InsertStringtoTree(RadixPtr Root, FrqPathPtr File,char* token){
+	SortedListPtr FileInfo = SLCreate(CompareStrings,Destruct);
+	FileInfo = InserttoTree(Root,token);
+	SLInsert(FileInfo,File);
 }
 

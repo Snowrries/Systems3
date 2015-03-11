@@ -50,7 +50,7 @@ int dirTrav(const char *fds, RadixPtr *burlapSack){
 	a = opendir(fds);
 	if(a == NULL){
 		if(errno == ENOTDIR){//Not simlink? Not Dir? We'll assume it's a file.
-			b = fopen(fds,r);
+			b = fopen(fds,"r");
 			
 			while(getline(&desu, &bufflen, fds) > 0){
 				/*regex me?*/
