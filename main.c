@@ -5,6 +5,7 @@
  *      Author: Anthony
  */
 #include "indexer.h"
+#include <errno.h>
 /* 	Try to open the const *char as a simlink, then directory, 
 	then file if both attempts failed. Use errno judiciously.
 	Returns 0 if failure.
@@ -54,7 +55,7 @@ int dirTrav(const char *fds, RadixPtr *burlapSack){
 			
 			while(getline(&desu, &bufflen, fds) > 0){
 				/*regex me?*/
-				if(regcomp(&patmat, [a-z]*+([a-z]+[0-9])*,REG_ICASE)!=0){
+				if(regcomp(&patmat,[a-z]*+([a-z]+[0-9])*,REG_ICASE)!=0){
 					printf("ERROR, ERROR. Fix me please. And hurry up about it.");
 				}
 				ofst = (char *)malloc((1+strlen(b))*sizeof(char *));
@@ -89,7 +90,7 @@ int dirTrav(const char *fds, RadixPtr *burlapSack){
 		
 	}
 	//So it is a directory! Let's iterate through and recurse everything we find.
-	while((c=readdir(a))!= NULL{
+	while(c=readdir(a))!= NULL{
 		dirTrav(c->d_name, burlapSack);
 	}
 	//End of journey. Go back to previous frame.

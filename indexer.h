@@ -7,7 +7,6 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <ctype.h>
-#include "count.h"
 #include "tokenizer.c"
 #include "RadixTree.h"
 #include "sorted-list.h"
@@ -34,10 +33,10 @@ void resetinput(struct input *, int);
 char readinput(struct input*);
 
 
-void InsertStringtoTree(RadixPtr,struct object*);
+void InsertStringtoTree(RadixPtr, FrqPathPtr,char*);
 
 
-void tokenizer(char* path, struct hash **hashslingslasher);
+void tokenizer(char* path);
 
 int CompareStrings(void* , void*);
 

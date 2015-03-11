@@ -60,10 +60,38 @@ void Destruct(void* a){
 	free(a);
 }
 
+void tokenizer(char* path){
+	  FILE* file = fopen(path, "r");
+	    if (file == NULL) {
+	        return;
+	    }
+	    struct input *ReadFile = (struct input*)malloc(sizeof(struct input));
+	    if (ReadFile== NULL) {
+	        return;
+	    }
+	    ReadFile->fd = fileno(file);
+	    ReadFile->length = 0;
+	    ReadFile->used = 0;
+	    char c;
+	    int i = 0;
+
+	    c = readInput(ReadFile);
+
+	    while(!isalnum(c)){
+	    	c = readInput(ReadFile);
+	    }
+
+}
 
 void InsertStringtoTree(RadixPtr Root, FrqPathPtr File,char* token){
 	SortedListPtr FileInfo = SLCreate(CompareStrings,Destruct);
 	FileInfo = InserttoTree(Root,token);
-	SLInsert(FileInfo,File);
+	if(FileInfo == NULL){
+		SLInsert(FileInfo,File);
+	}
+	else{
+		//search for file in sorted list; if found, remove and update and reinput?
+		//else insert with freq of one.
+	}
 }
 
