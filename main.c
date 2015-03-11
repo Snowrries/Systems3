@@ -8,6 +8,11 @@
 /* 	Try to open the const *char as a simlink, then directory, 
 	then file if both attempts failed. Use errno judiciously.
 	Returns 0 if failure.
+	
+	This programmer isn't sure how the directory links work- 
+	whether they give you the whole thing or just relative addresses
+	If it's just relative, we'll need to pass the whole addresses
+	every time we call the function, such that we can append it to file name collisions.
 	*/
 	
 int dirTrav(const char *fds, RadixPtr *burlapSack){
@@ -15,6 +20,10 @@ int dirTrav(const char *fds, RadixPtr *burlapSack){
 	struct dirent *c;
 	FILE *b;
 	char *desu;
+	char *ofst;//Offset
+	regex_t patmat;//Pattern matching
+	regmatch_t matmat;//matchmat
+	
 	size_t bufflen;
 	bufflen = 30;
 	desu = malloc(bufflen*sizeof(char));
@@ -42,9 +51,17 @@ int dirTrav(const char *fds, RadixPtr *burlapSack){
 		if(errno == ENOTDIR){//Not simlink? Not Dir? We'll assume it's a file.
 			b = fopen(fds,r);
 			
-			
-			/*Tokenize and index. Onegai.*/
-			
+			while(getline(&desu, &bufflen, fds) > 0){
+				/*regex me?*/
+				if(regcomp(&patmat, [a-z]*+([a-z]+[0-9])*,REG_ICASE)!=0){
+					printf("ERROR, ERROR. Fix me please. And hurry up about it.");
+				}
+				ofst = (char *)malloc((1+strlen(b))*sizeof(char *));
+				if(regexec(&patmat, b, 1+strlen(b), matmat, 0))
+				
+				
+				regfree(&patmat);
+			}//I reaaaaaaaaaaaally hope this line's right. If it's broke, check here at some point.
 			
 		}
 		else if(errno == EACCES){
@@ -64,6 +81,7 @@ int dirTrav(const char *fds, RadixPtr *burlapSack){
 	}
 	//End of journey. Go back to previous frame.
 	free(desu);
+	closedir(a);
 	return 0;
 	
 }
