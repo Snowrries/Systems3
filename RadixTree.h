@@ -26,6 +26,7 @@ struct RadixNode{
 
 typedef struct RadixNode* RadixPtr;
 
+typedef void* (*StructFiller)(void*,void*);
 RadixPtr RadNodeCreate(char*,int);
 
 RadixPtr MakeLikeATree(); //and leaf
@@ -39,7 +40,7 @@ int CompareNodes(RadixPtr,RadixPtr);
 void TreeDestruct();
 
 
-void PreorderTraverse();
+void PreorderTraverse(RadixPtr,SortedListPtr,StructFiller,int);
 
 void NodeCutter(RadixPtr,int);
 

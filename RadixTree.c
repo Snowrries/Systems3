@@ -122,7 +122,7 @@ int PrefixFinder(char * key,char* insert,int keylen,int insertlen){
 
 void NodeCutter(RadixPtr Node, int length){
 
-	char suffix[10];
+	char suffix[length];
 	memcpy(suffix,Node->string + length,Node->len - length + 1);
 	RadixPtr SuffixNode = RadNodeCreate(suffix,length);
 	SuffixNode->Child = Node->Child;
@@ -176,31 +176,40 @@ SortedListPtr InsertLocator(RadixPtr Head,RadixPtr Child,char* token){
 
 
 
-void PreorderTraverse(RadixPtr Head){
+void PreorderTraverse(RadixPtr Head,SortedListPtr Indexes,StructFiller sF,char* token){
 
-	//char token[50];
-	if(Head->Index !=NULL){
-		if(Head->Child != NULL){
-		PreorderTraverse(Head->Child);
-		}
-		else{
 
-			Head = Head->Next;
-			PreorderTraverse(Head);
-		}
+	if(Head == NULL){
 		return;
 	}
 	if(Head->Child == NULL){
+		strncpy(token,token,strlen(token) - Head->len +1);
 		if(Head->Next == NULL){
 			Head = Head->Parent->Next;
-			PreorderTraverse(Head);
+			PreorderTraverse(Head,Indexes,sF,token);
 		}
 		Head = Head->Next;
 		PreorderTraverse(Head);
 	}
+
+	strcat(token,Head->string);
+	if(Head->Index !=NULL){
+		SLInsert(Indexes,sf(Head->Index,token));
+
+		if(Head->Child != NULL){
+		PreorderTraverse(Head->Child,Indexes,sF,token);
+		}
+		else{
+			strncpy(token,token,strlen(token) - Head->len +1);
+			Head = Head->Next;
+			PreorderTraverse(Head,Indexes,sF,token);
+		}
+
+	}
+
 	else{
 	Head = Head->Child;
-	PreorderTraverse(Head);
+	PreorderTraverse(Head,Indexes,sF,token);
 	}
 
 
