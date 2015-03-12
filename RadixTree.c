@@ -92,8 +92,23 @@ int CompareNodes(RadixPtr Key,RadixPtr Token){
  * Input: Root Ptr of Tree
  * Output: None
  */
-void TreeDestruct(){
-
+void TreeDestruct(RadixPtr root){
+	SortedListIteratorPtr popo;
+	SortedListIteratorPtr nana;
+	if(root == NULL){
+			return;
+	}
+	while(root->Child != NULL){
+		TreeDestruct(root->Child);
+		root->Child == NULL;
+	}
+	while(root->Next!=NULL){
+		TreeDestruct(root->Next);
+		root->Next = NULL;
+	}
+	SLDestroy(root->Index);
+	free(root);
+	return;
 }
 /*Compares Two Strings and Finds Length of the matching prefix
  * Input: String to Compare to, String desired to be inserted, Length of Key, Length of insertstring
