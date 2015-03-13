@@ -18,6 +18,7 @@
  */
 RadixPtr RadNodeCreate(char* str, int length){
 	RadixPtr newNode = (RadixPtr) malloc(sizeof(struct RadixNode));
+	newNode->string = malloc(sizeof(char) * length);
 	newNode->string = str;
 	newNode->len = length;
 	newNode->Child = NULL;
@@ -44,22 +45,36 @@ RadixPtr MakeLikeATree(){
  *Input: Node of Parent Node and Child Node desired to insert
  *Output: Returns a SortedListPtr which contains information for File/Freq
  */
-SortedListPtr InsertToken(RadixPtr Head,RadixPtr Obj){
+SortedListPtr InsertToken(RadixPtr Head,char* token){
+	RadixPtr Obj = RadNodeCreate(token,strlen(token));
 	Obj->Parent = Head;
-	RadixPtr Child = Head->Child;
-	RadixPtr Prev = Head->Child;
+
+	RadixPtr Child = (Head->Child);
+	RadixPtr Prev = (Head);
+
 	int cmpresult;
 	if(Child == NULL){
 		Head->Child = Obj;
+
 		return Obj->Index;
 	}
 
 	//Go through the list of Child Nodes of Parent Node Head
-	while(Child->Next != NULL){
+	while(Child != NULL){
+
 		cmpresult = CompareNodes(Child,Obj);
-		if(cmpresult<0){
-				Prev->Next = Obj;
+
+		if(cmpresult>0){
+
+			if(Prev == Head){
 				Obj->Next = Child;
+				(Prev)->Child = Obj;
+				return Obj->Index;
+
+			}
+				Obj->Next = Child;
+				(Prev)->Next = Obj;
+
 				return Obj->Index;
 			}
 		//If there is a duplicate no need to insert Node
@@ -68,11 +83,11 @@ SortedListPtr InsertToken(RadixPtr Head,RadixPtr Obj){
 			return Head->Index;
 		}
 		Prev = Child;
-		Child = Child->Next;
+		Child = (Child)->Next;
 
 	}
 
-	Child->Next = Obj;
+	Child = Obj;
 	return Obj->Index;
 }
 /*Compares two Keys contained two Nodes; Used for Sorting
@@ -92,23 +107,8 @@ int CompareNodes(RadixPtr Key,RadixPtr Token){
  * Input: Root Ptr of Tree
  * Output: None
  */
-void TreeDestruct(RadixPtr root){
-	SortedListIteratorPtr popo;
-	SortedListIteratorPtr nana;
-	if(root == NULL){
-			return;
-	}
-	while(root->Child != NULL){
-		TreeDestruct(root->Child);
-		root->Child == NULL;
-	}
-	while(root->Next!=NULL){
-		TreeDestruct(root->Next);
-		root->Next = NULL;
-	}
-	SLDestroy(root->Index);
-	free(root);
-	return;
+void TreeDestruct(){
+
 }
 /*Compares Two Strings and Finds Length of the matching prefix
  * Input: String to Compare to, String desired to be inserted, Length of Key, Length of insertstring
@@ -117,15 +117,14 @@ void TreeDestruct(RadixPtr root){
 
 int PrefixFinder(char * key,char* insert,int keylen,int insertlen){
 	int i;
-	if(key == NULL){
-		return -1;
-	}
+
 	for(i = 0; i < insertlen; i ++){
-		insert++;
-		key++;
-		if(i == keylen || strncmp(key,insert,i) != 0){
+		if(i == keylen || strncmp(key,insert,1) != 0){
+
 			return i;
 		}
+		key++;
+		insert++;
 
 	}
 	return insertlen;
@@ -137,13 +136,21 @@ int PrefixFinder(char * key,char* insert,int keylen,int insertlen){
 
 void NodeCutter(RadixPtr Node, int length){
 
-	char suffix[length];
-	memcpy(suffix,Node->string + length,Node->len - length + 1);
-	RadixPtr SuffixNode = RadNodeCreate(suffix,length);
+
+	int sufflen = Node->len - length + 1;
+	char* suffix;
+	char* prefix;
+	suffix = malloc(sizeof(char) * sufflen);
+	prefix = malloc(sizeof(char) * length);
+
+	strncpy(suffix,Node->string + length,sufflen);
+	strncpy(prefix,Node->string,length);
+	Node->string = prefix;
+	RadixPtr SuffixNode = RadNodeCreate(suffix,strlen(suffix));
 	SuffixNode->Child = Node->Child;
 	SuffixNode->Index = Node->Index;
 	SuffixNode->Parent = Node;
-	Node->Child = NULL;
+	Node->Child = SuffixNode;
 	Node->Index = NULL;
 
 
@@ -153,36 +160,46 @@ void NodeCutter(RadixPtr Node, int length){
  *Output: SortedListPtr Index of File/Freq
  */
 
-SortedListPtr InsertLocator(RadixPtr Head,RadixPtr Child,char* token){
+void InsertLocator(RadixPtr Head,RadixPtr C,char* token){
 	int toklen =(int) strlen(token);
-	RadixPtr tok = RadNodeCreate(token,toklen);
 
-	//Child->HeadPtr = Head;
-	int prelen = PrefixFinder(Child->string,token,Child->len,toklen);
-	//Its the end of the list
-	if(prelen == -1){
-		return InsertToken(Head,tok);
+
+	if(C == NULL){
+
+		 InsertToken(Head,token);
+		 return;
 	}
+
+	int prelen = PrefixFinder(C->string,token,C->len,toklen);
+
 	if(prelen == 0){
-		return InsertLocator(Head,Child->Next,token);
+
+		return InsertLocator(Head,C->Next,token);
 	}
+
 	else if(prelen < toklen){
-		memmove(token,token+prelen, toklen - prelen + 1);
-		toklen= toklen - prelen;
-		if(prelen < Child->len){
-			NodeCutter(Child,prelen);
-		}
 
-		Head = Child;
-		Child = Child->Child;
-		return InsertLocator(Head,Child,token);
+		char* newtok = malloc(sizeof(char) * (toklen - prelen));
+		strncpy(newtok,token+prelen, toklen - prelen );
+		token = newtok;
+
+		if(prelen < C->len){
+			NodeCutter(C,prelen);
+
+		}
+		Head = C;
+		C = C->Child;
+
+		InsertLocator(Head,C,token);
+		 return;
 
 	}
+	InsertToken(Head,token);
 
-	return InsertToken(Head,tok);
+	return;
 }
 
-/*INCOMPLETE
+/*Complete
  * Traverses through the tree
  * Input: RootPtr of Tree
  * Output: Some sort of Struct that contains token, file, freq info
@@ -204,12 +221,12 @@ void PreorderTraverse(RadixPtr Head,SortedListPtr Indexes,StructFiller sF,char* 
 			PreorderTraverse(Head,Indexes,sF,token);
 		}
 		Head = Head->Next;
-		PreorderTraverse(Head);
+		PreorderTraverse(Head,Indexes,sF,token);
 	}
 
 	strcat(token,Head->string);
 	if(Head->Index !=NULL){
-		SLInsert(Indexes,sf(Head->Index,token));
+		SLInsert(Indexes,sF(Head->Index,token));
 
 		if(Head->Child != NULL){
 		PreorderTraverse(Head->Child,Indexes,sF,token);
@@ -229,3 +246,6 @@ void PreorderTraverse(RadixPtr Head,SortedListPtr Indexes,StructFiller sF,char* 
 
 
 }
+
+
+
