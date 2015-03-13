@@ -6,6 +6,7 @@
  */
 #include "indexer.h"
 #include <errno.h>
+#include "isascii.h"
 /* 	Try to open the const *char as a simlink, then directory, 
 	then file if both attempts failed. Use errno judiciously.
 	Returns 0 if failure.
@@ -21,10 +22,10 @@ int dirTrav(const char *fds, RadixPtr *burlapSack){
 	struct dirent *c;
 	FILE *b;
 	char *desu;
-	char *ofst;//Offset
-	char *inst; //Insert value in burlapSack
-	regex_t patmat;//Pattern matching
-	regmatch_t matmat;//matchmat
+	char *ofst;/*Offset*/
+	char *inst; /*Insert value in burlapSack*/
+	regex_t patmat;/*Pattern matching*/
+	regmatch_t matmat;/*matchmat*/
 	
 	size_t bufflen;
 	bufflen = 30;
@@ -46,11 +47,16 @@ int dirTrav(const char *fds, RadixPtr *burlapSack){
 		printf("Uhoh, the file's gone. Please check inputted filename and question file's existentiality.");
 		return 0;
 	}
-	//In other cases, it's just plainly not a simlink. 
+	/*In other cases, it's just plainly not a simlink. */
 
 	a = opendir(fds);
 	if(a == NULL){
-		if(errno == ENOTDIR){//Not simlink? Not Dir? We'll assume it's a file.
+		if(errno == ENOTDIR){/*Not simlink? Not Dir? We'll assume it's a file.*/
+			if(fakemain(fds) != 1){/*It's not a text file. */
+					free(desu);
+					closedir(a);
+					return 0;
+			}
 			b = fopen(fds,"r");
 			
 			while(getline(&desu, &bufflen, fds) > 0){
@@ -60,22 +66,21 @@ int dirTrav(const char *fds, RadixPtr *burlapSack){
 				}
 				ofst = (char *)malloc((1+strlen(b))*sizeof(char *));
 				if(regexec(&patmat, b, 1+strlen(b), matmat, 0)==0){
-						//It matched~!
-						//Here, we put the matches in the data struct. 
+						/*It matched~!*/
+						/*Here, we put the matches in the data struct. */
 						while(rm_so!=NULL){
 							inst = malloc((rm_eo - rm_so)*sizeof(char));
 							inst = b + rm_so;
 							/*Call the insert function!*/
 							
 						}
-						//End loop, line has been processed. 
+						/*End loop, line has been processed. */
 					}
-			
-			
-			
-				//Free reg for use in next line desu. Maybe we can move regcomp out of the loop and free it later? Look into this.
+				/*Free reg for use in next line desu. 
+				Maybe we can move regcomp out of the loop and free it later?
+				Look into this.*/
 				regfree(&patmat);
-			}//I reaaaaaaaaaaaally hope this line's right. If it's broke, check here at some point.
+			}/*I reaaaaaaaaaaaally hope this line's right. If it's broke, check here at some point.*/
 			
 		}
 		else if(errno == EACCES){
@@ -89,11 +94,11 @@ int dirTrav(const char *fds, RadixPtr *burlapSack){
 		}
 		
 	}
-	//So it is a directory! Let's iterate through and recurse everything we find.
+	/*So it is a directory! Let's iterate through and recurse everything we find.*/
 	while(c=readdir(a))!= NULL{
 		dirTrav(c->d_name, burlapSack);
 	}
-	//End of journey. Go back to previous frame.
+	/*End of journey. Go back to previous frame.*/
 	free(desu);
 	closedir(a);
 	return 0;
