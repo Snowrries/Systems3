@@ -72,7 +72,7 @@ int dirTrav(const char *fds, RadixPtr *burlapSack){
 							inst = malloc((rm_eo - rm_so)*sizeof(char));
 							inst = b + rm_so;
 							/*Call the insert function!*/
-							
+							InsertToken(RadNodeCreate(inst, strnlen(inst,em_eo)));
 						}
 						/*End loop, line has been processed. */
 					}
