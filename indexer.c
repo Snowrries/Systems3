@@ -92,6 +92,23 @@ void InsertStringtoTree(RadixPtr Root, FrqPathPtr File,char* token){
 	else{
 		//search for file in sorted list; if found, remove and update and reinput?
 		//else insert with freq of one.
+		SortedListIteratorPtr popo;
+		SortedListIteratorPtr nana;
+		if(root == NULL){
+				return;
+		}
+		while(root->Child != NULL){
+			if(root->Index->??????????????????????????????????????????????????????)
+			TreeDestruct(root->Child);
+			root->Child == NULL;
+		}
+		while(root->Next!=NULL){
+			TreeDestruct(root->Next);
+			root->Next = NULL;
+		}
+		SLDestroy(root->Index);
+		free(root);
+		return;
 	}
 }
 
