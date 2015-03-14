@@ -9,10 +9,16 @@
 
 
 int main(int argc, char** argv){
-	RadixPtr ygg;
-	
-	if(argc !=3){
+	RadixPtr ygg;	
+	int n;
+	n = atoi(argv[3]);
+	if(argc !=4){
 		printf("Invalid Numbers of Arguments");
+		return 0;
+	}
+	printf("%d", n);
+	if(n != 0 && n != 1){
+		printf("Please enter 0 or 1 as the third parameter. 0 if you would not like to follow Symbolic Links, 1 if you would.\n");
 		return 0;
 	}
 	char userinput[32];
@@ -32,14 +38,15 @@ int main(int argc, char** argv){
 		return 0;
 	}
 
-	printf("File will be overwritten");
+	printf("File will be overwritten\n");
 	}
 	if(access(argv[2], F_OK) == -1){
 		printf("File or Directory does not exist");
 		return 0;
 	}
+	
 	ygg = MakeLikeATree();
-	dirTrav(argv[2], ygg);
+	dirTrav(argv[2], ygg, n);
 	writetofile(ygg,argv[1]);
 	TreeDestruct(ygg);
 	

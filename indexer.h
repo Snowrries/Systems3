@@ -50,10 +50,11 @@ void writetofile(RadixPtr,char* file);
 /*
  * Traverses through a directory
  * if a file is found it will be tokenized and stored into the tree
- * Input: Path, RootPtr
+ * if a symlink is detected, it will follow if n == 1, and ignore if n == 0
+ * Input: Path, RootPtr, parameter n
  * Outout: None
  */
-void dirTrav(const char*,RadixPtr);
+void dirTrav(const char *path, RadixPtr root, int n);
 
 
 #endif

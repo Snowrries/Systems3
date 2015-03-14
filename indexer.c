@@ -29,8 +29,7 @@ void* StructFill(void* toks, void* buk){
 
 }
 
-
-void dirTrav(const char* path,RadixPtr root){
+void dirTrav(const char* path,RadixPtr root, int n){
 
 		DIR *directory;
 		Reader fileread;
@@ -46,13 +45,15 @@ void dirTrav(const char* path,RadixPtr root){
 		desu = malloc(bufflen*sizeof(char));
 
 		if(readlink(path, desu, bufflen)!= -1){
-
 			/*It's a symlink!*/
+			if(n == 0){ /*Not following symlinks*/
+				return;
+			}
 			while(bufflen == readlink(path, desu, bufflen)){
 				bufflen += 10;
 			}
 
-			dirTrav(desu, root);
+			dirTrav(desu, root, n);
 		}
 		if(errno == EACCES){
 			printf("File permissions insufficient.");
@@ -96,7 +97,7 @@ void dirTrav(const char* path,RadixPtr root){
 	nextlen = strlen(nextDir->d_name);
 	strncat(newPath,nextDir->d_name,nextlen);
 	path = newPath;
-	dirTrav(path,root);
+	dirTrav(path, root, n);
 	free(newPath);
 	}
 	closedir(directory);
