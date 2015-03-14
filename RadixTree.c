@@ -107,8 +107,7 @@ void SLBucketDestroy(void* Node){
 }
 
 void TreeDestruct(RadixPtr root){
-	SortedListIteratorPtr popo;
-	SortedListIteratorPtr nana;
+
 	if(root == NULL){
 			return;
 	}

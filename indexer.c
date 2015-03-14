@@ -118,7 +118,7 @@ void writetofile(RadixPtr Root,char* file){
 	token[0]= 0;
 	PreorderTraverse(ACertainScientificRailgun,token,ACertainMagicalIndex,a);
 	iter = SLCreateIterator(ACertainMagicalIndex);
-	fprintf(output,"{ \"list\" : [ \n", item->token );
+	fprintf(output,"{ \"list\" : [ \n");
 	while(iter != NULL){
 		item = (Indexee)SLGetItem(iter);
 		fprintf(output,"\t\t { \"%s\" : [ \n", item->token );

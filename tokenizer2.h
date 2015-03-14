@@ -10,7 +10,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <unistd.h>
+#include <ctype.h>
 struct input{
 	int fd;
 	char buffer[2048];

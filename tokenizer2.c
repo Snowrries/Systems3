@@ -29,12 +29,13 @@ void DestroyReader(Reader input){
 }
 
 char readinput(struct input* iptr){
-char c;
+unsigned char c;
 
 if(iptr->used < iptr->length){
 	c = iptr->buffer[iptr->used];
 	iptr->used ++;
-	return tolower(c);
+	c = tolower(c);
+	return c;
 }
 
 else if ( iptr->length == iptr->used){
@@ -48,7 +49,8 @@ else if ( iptr->length == iptr->used){
 else{
 	c= iptr->buffer[0];
 	iptr->used =1;
-	return tolower(c);
+	c = tolower(c);
+	return c;
 }
 
 return 0;
@@ -60,7 +62,7 @@ char* tokenize(Reader FilePtr){
 	char* token =(char*) malloc(sizeof(char) *len);
 
 
-	char c;
+	unsigned char c;
 	int i = 0;
 	c = readinput(FilePtr);
 	while(!isalpha(c)){
