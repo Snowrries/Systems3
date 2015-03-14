@@ -54,7 +54,7 @@ typedef void* (*StructFiller)(void*,void*);
  */
 RadixPtr RadNodeCreate(char*,int);
 /* Intializes a Node for the BucketList
- * Input: String with the file name
+ * Input: String with the file name and length of the string
  * Output: A IndexNode
  */
 IndexPtr IndexNodeCreate(const char*);
@@ -101,7 +101,7 @@ void SLBucketDestroy(void*);
  * Input: Root Ptr of Tree
  * Output: None
  */
-void TreeDestruct();
+void TreeDestruct(RadixPtr root);
 
 /*
  * Traverses through the tree
