@@ -7,6 +7,7 @@
 #include "indexer.h"
 #include <errno.h>
 #include "isascii.h"
+#include "tokenizer.h"
 /* 	Try to open the const *char as a simlink, then directory, 
 	then file if both attempts failed. Use errno judiciously.
 	Returns 0 if failure.
@@ -20,16 +21,11 @@
 int dirTrav(const char *fds, RadixPtr *burlapSack){
 	DIR *a;
 	struct dirent *c;
-	FILE *b;
 	char *desu;
-	char *ofst;/*Offset*/
-	char *inst; /*Insert value in burlapSack*/
-	regex_t patmat;/*Pattern matching*/
-	regmatch_t matmat;/*matchmat*/
-	
 	size_t bufflen;
 	bufflen = 30;
 	desu = malloc(bufflen*sizeof(char));
+	
 	if(readlink(fds, desu, bufflen)!= -1){
 		
 		/*It's a symlink!*/
@@ -57,30 +53,8 @@ int dirTrav(const char *fds, RadixPtr *burlapSack){
 					closedir(a);
 					return 0;
 			}
-			b = fopen(fds,"r");
-			
-			while(getline(&desu, &bufflen, fds) > 0){
-				/*regex me?*/
-				if(regcomp(&patmat,[a-z]*+([a-z]+[0-9])*,REG_ICASE)!=0){
-					printf("ERROR, ERROR. Fix me please. And hurry up about it.");
-				}
-				ofst = (char *)malloc((1+strlen(b))*sizeof(char *));
-				if(regexec(&patmat, b, 1+strlen(b), matmat, 0)==0){
-						/*It matched~!*/
-						/*Here, we put the matches in the data struct. */
-						while(rm_so!=NULL){
-							inst = malloc((rm_eo - rm_so)*sizeof(char));
-							inst = b + rm_so;
-							/*Call the insert function!*/
-							InsertToken(RadNodeCreate(inst, strnlen(inst,em_eo)));
-						}
-						/*End loop, line has been processed. */
-					}
-				/*Free reg for use in next line desu. 
-				Maybe we can move regcomp out of the loop and free it later?
-				Look into this.*/
-				regfree(&patmat);
-			}/*I reaaaaaaaaaaaally hope this line's right. If it's broke, check here at some point.*/
+			matching(fds);
+			//This calls the tokenizerer.
 			
 		}
 		else if(errno == EACCES){
