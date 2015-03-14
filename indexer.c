@@ -43,7 +43,22 @@ return 0;
 }
 
 
+void writetofile(RadixPtr,char* file){
+	FILE* output = fopen(file,"w");
+	SortedListPtr ACertainMagicalIndex;
+	RadixPtr ACertainScientificRailgun;
+	SortedListIteratorPtr iter;
+	ACertainScientificRailgun = MakeLikeATree();
+	char token[30];
+	token[0]= 0;
+	ACertainMagicalIndex = PreorderTraverse(ACertainScientificRailgun,token);
+	iter = SLCreateIterator(ACertainMagicalIndex);
 
+	while(iter != NULL){
+
+		//fprintf(output, )
+	}
+}
 
 
 void tokenizer(char* path){

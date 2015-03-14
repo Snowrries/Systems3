@@ -32,6 +32,7 @@ void InsertStringtoTree(RadixPtr,char*,char*);
 
 void tokenizer(char* path);
 
+void writetofile(RadixPtr,char* file);
 
 
 
