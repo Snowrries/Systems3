@@ -63,10 +63,10 @@ char* tokenize(Reader FilePtr){
 	char c;
 	int i = 0;
 	c = readinput(FilePtr);
-	while(!isalnum(c)){
+	while(!isalpha(c)){
 		c = readinput(FilePtr);
 		if(c == -1){
-			DestoryReader(FilePtr);
+			DestroyReader(FilePtr);
 			return NULL;
 		}
 	}
