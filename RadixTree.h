@@ -88,13 +88,13 @@ int CompareNodes(RadixPtr,RadixPtr);
  * Input: Two Bucket Nodes
  * Output: if Key>Token return >0 , Key<Token return <0, Equal increment Freq and return 0
  */
-int CompareIndex(void*,void*);
+int CompareBucket(void*,void*);
 
 /*Destruct function for SLBuckets Nodes
  * Input: A Bucket Node
  * Output: None but destroys a node
  */
-void SLIndexDestruct(void*);
+void SLBucketDestroy(void*);
 
 /*
  * Destroys the Tree
@@ -109,7 +109,7 @@ void TreeDestruct();
  * Output: Some sort of Struct that contains token, file, freq info
  *
  */
-void PreorderTraverse(RadixPtr,char*);
+void PreorderTraverse(RadixPtr,char*,SortedListPtr,StructFiller);
 
 /*Splits a Node to a prefix and suffix/ Suffix becomes a child node
  * Input: Node to Split and Length of the Prefix
@@ -121,7 +121,7 @@ void NodeCutter(RadixPtr,int);
  *Input: Parent Node, Child Node, token desired to be inputted
  *Output: SortedListPtr Index of File/Freq
  */
-void InsertLocator(RadixPtr,RadixPtr,char*,char*);
+void InserttoTree(RadixPtr,RadixPtr,char*,char*);
 
 
 #endif /* RADIXTREE_H_ */

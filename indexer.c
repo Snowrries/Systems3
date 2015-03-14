@@ -7,8 +7,26 @@
 
 #include "indexer.h"
 
+/*
+ *
+ */
+int CompareIndex(void* a,void* b) {
+	return 1;
+}
 
+void DestroyIndex(void* a){
 
+}
+
+void* StructFill(void* toks, void* buk){
+	char* tok = (char*) toks;
+	SortedListPtr Bucket = buk;
+	Indexee newInd = (Indexee) malloc(sizeof(Indexee));
+	newInd->Index = Bucket;
+	newInd->token = tok;
+	return newInd;
+
+}
 
 void resetinput(struct input *iptr, int fd){
 	iptr->fd = fd;
@@ -48,16 +66,33 @@ void writetofile(RadixPtr Root,char* file){
 	SortedListPtr ACertainMagicalIndex;
 	RadixPtr ACertainScientificRailgun;
 	SortedListIteratorPtr iter;
+	SortedListIteratorPtr BucketIter;
+	Indexee item;
+	IndexPtr Bucket;
+	StructFiller a = &StructFill;
+	ACertainMagicalIndex = SLCreate(CompareIndex,DestroyIndex);
 	ACertainScientificRailgun = MakeLikeATree();
 	char token[30];
 	token[0]= 0;
-	//ACertainMagicalIndex = PreorderTraverse(ACertainScientificRailgun,token);
+	PreorderTraverse(ACertainScientificRailgun,token,ACertainMagicalIndex,a);
 	iter = SLCreateIterator(ACertainMagicalIndex);
-
+	fprintf(output,"{ \"list\" : [ \n", item->token );
 	while(iter != NULL){
+		item = (Indexee)SLGetItem(iter);
+		fprintf(output,"\t\t { \"%s\" : [ \n", item->token );
+		BucketIter = SLCReateIterator(item->Index);
+		while(BucketIter != NULL){
+			Bucket = (IndexPtr) SLGetItem(BucketIter);
+			fprintf(output,"\t\t{ \"%s\" : %d }\n",Bucket->file,Bucket->freq);
+			SLGetNext(BucketIter);
+		}
+		fprintf(output,"\t }} \n");
 
-		//fprintf(output, )
+		SLGetNext(iter);
 	}
+	fprintf(output,"}}");
+	fclose(output);
+	return;
 }
 
 
@@ -85,7 +120,7 @@ void tokenizer(char* path){
 }
 
 void InsertStringtoTree(RadixPtr Root,char* token,char* path){
-		InsertLocator(Root,Root->Child,token,path);
+		InserttoTree(Root,Root->Child,token,path);
 
 }
 

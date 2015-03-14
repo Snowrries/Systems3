@@ -1,8 +1,6 @@
 /*
  * main.c
  *
- *  Created on: Mar 10, 2015
- *      Author: Anthony
  */
 #include "indexer.h"
 #include <errno.h>
@@ -81,7 +79,7 @@ int dirTrav(const char *fds, RadixPtr *burlapSack){
 
 
 
-
+/*
 
 int main(int argc, char** argv){
 	if(argc !=3){

@@ -89,7 +89,7 @@ int CompareNodes(RadixPtr Key,RadixPtr Token){
 
 
 
-int CompareIndex(void* K, void* I){
+int CompareBucket(void* K, void* I){
 	IndexPtr Key = (IndexPtr) K;
 	IndexPtr Insert = (IndexPtr) I;
 	int result = strcmp(Key->file,Insert->file);
@@ -99,7 +99,7 @@ int CompareIndex(void* K, void* I){
 	return result;
 }
 
-void SLIndexDestruct(void* Node){
+void SLBucketDestroy(void* Node){
 	IndexPtr Del = (IndexPtr) Node;
 	Del->file = NULL;
 	free(Del);
@@ -166,11 +166,11 @@ void NodeCutter(RadixPtr Node, int length){
 }
 
 
-void InsertLocator(RadixPtr Head,RadixPtr C,char* token,char* path){
+void InserttoTree(RadixPtr Head,RadixPtr C,char* token,char* path){
 	int toklen =(int) strlen(token);
 	SortedListPtr *Result;
-	cmptype compare = &CompareIndex;
-	deltype delete = &SLIndexDestruct;
+	cmptype compare = &CompareBucket;
+	deltype delete = &SLBucketDestroy;
 	IndexPtr newIndex;
 	if(C == NULL){
 		Result = InsertToken(Head,token);
@@ -190,7 +190,7 @@ void InsertLocator(RadixPtr Head,RadixPtr C,char* token,char* path){
 
 	if(prelen == 0){
 
-		InsertLocator(Head,C->Next,token,path);
+		InserttoTree(Head,C->Next,token,path);
 		return;
 	}
 
@@ -207,7 +207,7 @@ void InsertLocator(RadixPtr Head,RadixPtr C,char* token,char* path){
 		Head = C;
 		C = C->Child;
 
-		InsertLocator(Head,C,token,path);
+		InserttoTree(Head,C,token,path);
 		 return;
 
 	}
@@ -224,7 +224,7 @@ void InsertLocator(RadixPtr Head,RadixPtr C,char* token,char* path){
 
 
 
-void PreorderTraverse(RadixPtr Head,char* token){
+void PreorderTraverse(RadixPtr Head,char* token,SortedListPtr Output,StructFiller sF){
 
 
 	if(Head == NULL){
@@ -239,22 +239,21 @@ void PreorderTraverse(RadixPtr Head,char* token){
 
 
 	if(Head->Index !=NULL){
+		SLInsert(Output,sF(token,Head->Index));
 
-
-		printf("%s", token);
 
 		}
 
 
 
 
-	PreorderTraverse(Head->Child,token);
+	PreorderTraverse(Head->Child,token,Output,sF);
 	char* newtok = malloc(sizeof(char) * (strlen(token) - Head->len));
 
 	strncpy(newtok,token,strlen(token) - Head->len );
 	token = newtok;
 
-	PreorderTraverse(Head->Next,token);
+	PreorderTraverse(Head->Next,token,Output,sF);
 
 
 

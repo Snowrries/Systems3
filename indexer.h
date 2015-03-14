@@ -19,16 +19,23 @@ struct input{
 };
 
 
+struct Indexee{
+	char* token;
+	SortedListPtr Index;
+};
 
+typedef struct Indexee* Indexee;
+int CompareIndex(void*,void*);
 
+void DestroyIndex(void*);
+
+void* StructFill(void*,void*);
 
 void resetinput(struct input *, int);
 
 char readinput(struct input*);
 
-
 void InsertStringtoTree(RadixPtr,char*,char*);
-
 
 void tokenizer(char* path);
 
