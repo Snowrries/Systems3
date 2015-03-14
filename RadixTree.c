@@ -1,7 +1,7 @@
 
 
 
-#include "radixtree.h"
+#include "RadixTree.h"
 
 RadixPtr RadNodeCreate(char* str, int length){
 	RadixPtr newNode = (RadixPtr) malloc(sizeof(struct RadixNode));
