@@ -12,10 +12,10 @@ int main(int argc, char** argv){
 	RadixPtr ygg;	
 	int n;
 	if(argc !=4){
-		printf("Invalid Numbers of Arguments");
+		printf("Invalid Numbers of Arguments\n");
 		return 0;
 	}
-	printf("%d", n);
+        n = atoi(argv[3]);
 	if(n != 0 && n != 1){
 		printf("Please enter 0 or 1 as the third parameter. 0 if you would not like to follow Symbolic Links, 1 if you would.\n");
 		return 0;
@@ -43,7 +43,6 @@ int main(int argc, char** argv){
 		printf("File or Directory does not exist");
 		return 0;
 	}
-        n = atoi(argv[3]);
 	ygg = MakeLikeATree();
 	dirTrav(argv[2], ygg, n);
 	writetofile(ygg,argv[1]);
