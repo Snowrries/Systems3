@@ -20,28 +20,20 @@ struct input{
 
 
 
-struct object{
-	char* file;
-	int frequency;
 
-};
-
-typedef struct object* FrqPathPtr;
 
 void resetinput(struct input *, int);
 
 char readinput(struct input*);
 
 
-void InsertStringtoTree(RadixPtr, FrqPathPtr,char*);
+void InsertStringtoTree(RadixPtr,char*,char*);
 
 
 void tokenizer(char* path);
 
-int CompareStrings(void* , void*);
 
-void Destruct(void* a);
-//Hashtable stuff somewhere here
+
 
 
 #endif

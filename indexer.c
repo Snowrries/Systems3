@@ -44,21 +44,7 @@ return 0;
 
 
 
-int CompareStrings(void* a, void* b){
-	FrqPathPtr First = (FrqPathPtr) a;
-	FrqPathPtr Second = (FrqPathPtr) b;
-	if(First->frequency > Second->frequency){
-		return 1;
-	}
-	else if(First->frequency == Second->frequency){
-		return strcmp(First->file,Second->file);
-	}
-	return -1;
-}
 
-void Destruct(void* a){
-	free(a);
-}
 
 void tokenizer(char* path){
 	  FILE* file = fopen(path, "r");
@@ -83,32 +69,8 @@ void tokenizer(char* path){
 
 }
 
-void InsertStringtoTree(RadixPtr Root, FrqPathPtr File,char* token){
-	SortedListPtr FileInfo = SLCreate(CompareStrings,Destruct);
-	FileInfo = InserttoTree(Root,token);
-	if(FileInfo == NULL){
-		SLInsert(FileInfo,File);
-	}
-	else{
-		//search for file in sorted list; if found, remove and update and reinput?
-		//else insert with freq of one.
-		SortedListIteratorPtr popo;
-		SortedListIteratorPtr nana;
-		if(root == NULL){
-				return;
-		}
-		while(root->Child != NULL){
-			if(root->Index->??????????????????????????????????????????????????????)
-			TreeDestruct(root->Child);
-			root->Child == NULL;
-		}
-		while(root->Next!=NULL){
-			TreeDestruct(root->Next);
-			root->Next = NULL;
-		}
-		SLDestroy(root->Index);
-		free(root);
-		return;
-	}
+void InsertStringtoTree(RadixPtr Root,char* token,char* path){
+		InsertLocator(Root,token,path);
+
 }
 
