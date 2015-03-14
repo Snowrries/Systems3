@@ -150,35 +150,6 @@ void TreeDestruct(RadixPtr root){
 	free(root);
 	return;
 }
-/*
-		**Incomplete**
-	Prints tree alphabetically.
-	Input: Root ptr of tree
-	Output: A text file containing a formatted list of the
-	tree data in alphabetical sorted order.
-*/
-	FILE* TreePrint(RadixPtr root, FILE* f){
-		char* ditto;
-		int buflen;
-		buflen = 99;
-		
-		fopen(f, "w");
-		csnprintf(ditto, buflen, "{%s : [\n", (char*)f);
-		fwrite(ditto,1,strlen(ditto)); //Maybe gubby? 
-	while(root->Next!=NULL){
-		while(root->Child != NULL){
-			fwrite("\t{%s : [\n", root->string);
-			fwrite("\t\t{%s : %d}\n", root->Index->file, root->Index->occ); // Change what these are called to fit the Index
-			TreePrint(root->Child);
-		}
-		TreePrint(root->Next);
-	}
-	fwrite("\t\t]}");
-		fwrite("\t]}");
-		
-		return f;
-	}
-	
 /*Compares Two Strings and Finds Length of the matching prefix
  * Input: String to Compare to, String desired to be inserted, Length of Key, Length of insertstring
  * Output: Length of matching prefix characters

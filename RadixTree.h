@@ -11,7 +11,7 @@
 #include"sorted-list.h"
 #include <stdio.h>
 #include <string.h>
-
+#include <stdlib.h>
 struct RadixNode{
 
 	char* string;
@@ -22,31 +22,48 @@ struct RadixNode{
 	struct RadixNode * Parent;
 };
 
+struct Index{
+	char* file;
+	int freq;
+
+};
 
 
 typedef struct RadixNode* RadixPtr;
+
+typedef struct Index* IndexPtr;
+
+typedef int (*cmptype)(void*, void*);
+
+typedef void (*deltype)(void*);
 
 typedef void* (*StructFiller)(void*,void*);
 
 RadixPtr RadNodeCreate(char*,int);
 
+IndexPtr IndexNodeCreate(char*);
+
 RadixPtr MakeLikeATree(); //and leaf
 
-SortedListPtr InsertToken(RadixPtr,char*);
+SortedListPtr *InsertToken(RadixPtr,char*);
 
 int PrefixFinder(char *,char*,int,int);
 
 int CompareNodes(RadixPtr,RadixPtr);
 
-void TreeDestruct(RadixPtr root);
+int CompareIndex(void*,void*);
 
-void PreorderTraverse(RadixPtr,SortedListPtr,StructFiller,char*);
+void SLIndexDestruct(void*);
+
+void TreeDestruct();
+
+//void PreorderTraverse(RadixPtr,SortedListPtr,StructFiller,char*);
+
+void PreorderTraverse(RadixPtr,char*);
 
 void NodeCutter(RadixPtr,int);
 
-void InsertLocator(RadixPtr,RadixPtr,char*);
-
-FILE* TreePrint(RadixPtr root, FILE* f);
+void InsertLocator(RadixPtr,RadixPtr,char*,char*);
 
 
 #endif /* RADIXTREE_H_ */
