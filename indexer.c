@@ -15,7 +15,8 @@ int CompareIndex(void* a,void* b) {
 }
 
 void DestroyIndex(void* a){
-
+	Indexee toDel = (Indexee) a;
+	free(toDel);
 }
 
 void* StructFill(void* toks, void* buk){
@@ -29,7 +30,76 @@ void* StructFill(void* toks, void* buk){
 }
 
 
+void dirTrav(const char* path,RadixPtr root){
 
+		DIR *directory;
+		Reader fileread;
+		char* tok;
+		char* newPath;
+		int pathLen;
+		int nextlen;
+
+
+		char *desu;
+		size_t bufflen;
+		bufflen = 30;
+		desu = malloc(bufflen*sizeof(char));
+
+		if(readlink(path, desu, bufflen)!= -1){
+
+			/*It's a symlink!*/
+			while(bufflen == readlink(path, desu, bufflen)){
+				bufflen += 10;
+			}
+
+			dirTrav(desu, root);
+		}
+		if(errno == EACCES){
+			printf("File permissions insufficient.");
+			return;
+		}
+		else if(errno == ENOENT){
+			printf("Uhoh, the file's gone. Please check inputted filename and question file's existentiality.");
+			return ;
+		}
+
+
+//Directory traverse
+	if(strcmp(path, "..") != 0){
+		return;
+	}
+
+	struct stat *info = (struct stat*) malloc(sizeof(struct stat));
+	stat(path,info);
+	if(S_ISREG(info->st_mode) && fakemain(path) == 1){
+		fileread = CreateReader(path);
+		while((tok = tokenize(fileread)) != NULL){
+
+			InsertStringtoTree(root,tok,path);
+
+		}
+
+	}
+	directory = opendir(path);
+	struct dirent *nextDir;
+
+	while((nextDir = readdir(directory))){
+		newPath = (char*)malloc((strlen(path) + strlen(nextDir->d_name)+1) *sizeof(char));
+
+
+	pathLen = strnlen(path);
+	strncpy(newPath,path,pathLen);
+	newPath[pathLen] = '/';
+	pathLen++;
+	newPath[pathLen] = '\0';
+	nextlen = strlen(nextDir->d_name);
+	strncat(newPath,nextDir->d_name,nextlen);
+	path = newPath;
+	dirTrav(path,root);
+	free(newPath);
+	}
+	closedir(directory);
+}
 
 
 
@@ -43,7 +113,7 @@ void writetofile(RadixPtr Root,char* file){
 	IndexPtr Bucket;
 	StructFiller a = &StructFill;
 	ACertainMagicalIndex = SLCreate(CompareIndex,DestroyIndex);
-	ACertainScientificRailgun = MakeLikeATree();
+	ACertainScientificRailgun = Root;
 	char token[30];
 	token[0]= 0;
 	PreorderTraverse(ACertainScientificRailgun,token,ACertainMagicalIndex,a);

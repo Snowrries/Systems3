@@ -7,7 +7,10 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <ctype.h>
-#include "tokenizer.c"
+#include <errno.h>
+#include "isascii.h"
+//#include "tokenizer.c"
+#include "tokenizer2.c"
 #include "RadixTree.h"
 #include "sorted-list.h"
 
@@ -36,7 +39,7 @@ void InsertStringtoTree(RadixPtr,char*,char*);
 
 void writetofile(RadixPtr,char* file);
 
-
+void dirTrav(const char*,RadixPtr);
 
 
 #endif

@@ -66,13 +66,7 @@ int dirTrav(const char *fds, RadixPtr *burlapSack){
 		}
 		
 	}
-	/*So it is a directory! Let's iterate through and recurse everything we find.*/
-	while(c=readdir(a)!= NULL){
-		dirTrav(c->d_name, burlapSack);
-	}
-	/*End of journey. Go back to previous frame.*/
-	free(desu);
-	closedir(a);
+
 	return 0;
 	
 }
