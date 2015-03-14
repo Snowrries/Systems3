@@ -25,19 +25,14 @@ struct Indexee{
 };
 
 typedef struct Indexee* Indexee;
+
 int CompareIndex(void*,void*);
 
 void DestroyIndex(void*);
 
 void* StructFill(void*,void*);
 
-void resetinput(struct input *, int);
-
-char readinput(struct input*);
-
 void InsertStringtoTree(RadixPtr,char*,char*);
-
-void tokenizer(char* path);
 
 void writetofile(RadixPtr,char* file);
 

@@ -28,37 +28,9 @@ void* StructFill(void* toks, void* buk){
 
 }
 
-void resetinput(struct input *iptr, int fd){
-	iptr->fd = fd;
-	iptr->used =0;
-	iptr->length=0;
-}
 
-char readinput(struct input* iptr){
-char c;
 
-if(iptr->used < iptr->length){
-	c = iptr->buffer[iptr->used];
-	iptr->used ++;
-	return tolower(c);
-}
 
-else if ( iptr->length == iptr->used){
-	iptr->length = read(iptr->fd, iptr->buffer,sizeof(iptr->buffer));
-	if(iptr->length==0){
-		iptr->used = 0;
-		return -1;
-	}
-
-}
-else{
-	c= iptr->buffer[0];
-	iptr->used =1;
-	return tolower(c);
-}
-
-return 0;
-}
 
 
 void writetofile(RadixPtr Root,char* file){
@@ -80,15 +52,15 @@ void writetofile(RadixPtr Root,char* file){
 	while(iter != NULL){
 		item = (Indexee)SLGetItem(iter);
 		fprintf(output,"\t\t { \"%s\" : [ \n", item->token );
-		BucketIter = SLCReateIterator(item->Index);
+		BucketIter = SLCreateIterator(item->Index);
 		while(BucketIter != NULL){
 			Bucket = (IndexPtr) SLGetItem(BucketIter);
 			fprintf(output,"\t\t{ \"%s\" : %d }\n",Bucket->file,Bucket->freq);
-			SLGetNext(BucketIter);
+			SLNextItem(BucketIter);
 		}
 		fprintf(output,"\t }} \n");
 
-		SLGetNext(iter);
+		SLNextItem(iter);
 	}
 	fprintf(output,"}}");
 	fclose(output);
@@ -96,28 +68,7 @@ void writetofile(RadixPtr Root,char* file){
 }
 
 
-void tokenizer(char* path){
-	  FILE* file = fopen(path, "r");
-	    if (file == NULL) {
-	        return;
-	    }
-	    struct input *ReadFile = (struct input*)malloc(sizeof(struct input));
-	    if (ReadFile== NULL) {
-	        return;
-	    }
-	    ReadFile->fd = fileno(file);
-	    ReadFile->length = 0;
-	    ReadFile->used = 0;
-	    char c;
-	    int i = 0;
 
-	    c = readinput(ReadFile);
-
-	    while(!isalnum(c)){
-	    	c = readinput(ReadFile);
-	    }
-
-}
 
 void InsertStringtoTree(RadixPtr Root,char* token,char* path){
 		InserttoTree(Root,Root->Child,token,path);

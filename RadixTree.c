@@ -239,6 +239,7 @@ void PreorderTraverse(RadixPtr Head,char* token,SortedListPtr Output,StructFille
 
 
 	if(Head->Index !=NULL){
+
 		SLInsert(Output,sF(token,Head->Index));
 
 
