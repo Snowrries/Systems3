@@ -5,7 +5,7 @@
 #include "indexer.h"
 #include <errno.h>
 #include "isascii.h"
-#include "tokenizer.h"
+
 /* 	Try to open the const *char as a simlink, then directory, 
 	then file if both attempts failed. Use errno judiciously.
 	Returns 0 if failure.

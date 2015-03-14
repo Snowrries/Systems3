@@ -78,6 +78,7 @@ void dirTrav(const char* path,RadixPtr root){
 			InsertStringtoTree(root,tok,path);
 
 		}
+		return;
 
 	}
 	directory = opendir(path);

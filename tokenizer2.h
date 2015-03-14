@@ -21,14 +21,33 @@ struct input{
 
 typedef struct input* Reader;
 
+/*
+ *Create struct Input that can keep track of location in file
+ *Input: A Path name
+ *Output: None but creates Struct Input
+ */
 Reader CreateReader(const char*);
-
+/*
+ * Destroys struct Input
+ * Input: takes in Reader
+ * Output:None, frees struct
+ */
 void DestroyReader(Reader);
 
+/*Traverses through the File given by Reader and creates tokens
+ * Input: Struct Reader which contians file information
+ * Output: A valid Alphanumeric token
+ */
 char* tokenize(Reader);
 
+/*Resets Reader back to the beginning if needed
+ * Takes in Reader and a file descriptor
+ */
 void resetinput(struct input*, int);
 
+/*Returns a char from the file
+ * Input:A struct Input* which contains file information
+ */
 char readinput(struct input*);
 
 #endif /* TOKENIZER2_H_ */
