@@ -44,7 +44,7 @@ void dirTrav(const char* path,RadixPtr root){
 		size_t bufflen;
 		bufflen = 30;
 		desu = malloc(bufflen*sizeof(char));
-
+//Symlink check
 		if(readlink(path, desu, bufflen)!= -1){
 
 			/*It's a symlink!*/
@@ -85,18 +85,16 @@ void dirTrav(const char* path,RadixPtr root){
 
 	while((nextDir = readdir(directory))){
 		newPath = (char*)malloc((strlen(path) + strlen(nextDir->d_name)+1) *sizeof(char));
-
-
-	pathLen = strnlen(path);
-	strncpy(newPath,path,pathLen);
-	newPath[pathLen] = '/';
-	pathLen++;
-	newPath[pathLen] = '\0';
-	nextlen = strlen(nextDir->d_name);
-	strncat(newPath,nextDir->d_name,nextlen);
-	path = newPath;
-	dirTrav(path,root);
-	free(newPath);
+		pathLen = strnlen(path);
+		strncpy(newPath,path,pathLen);
+		newPath[pathLen] = '/';
+		pathLen++;
+		newPath[pathLen] = '\0';
+		nextlen = strlen(nextDir->d_name);
+		strncat(newPath,nextDir->d_name,nextlen);
+		path = newPath;
+		dirTrav(path,root);
+		free(newPath);
 	}
 	closedir(directory);
 }
@@ -111,6 +109,7 @@ void writetofile(RadixPtr Root,char* file){
 	SortedListIteratorPtr BucketIter;
 	Indexee item;
 	IndexPtr Bucket;
+	
 	StructFiller a = &StructFill;
 	ACertainMagicalIndex = SLCreate(CompareIndex,DestroyIndex);
 	ACertainScientificRailgun = Root;
@@ -128,11 +127,11 @@ void writetofile(RadixPtr Root,char* file){
 			fprintf(output,"\t\t{ \"%s\" : %d }\n",Bucket->file,Bucket->freq);
 			SLNextItem(BucketIter);
 		}
-		fprintf(output,"\t }} \n");
+		fprintf(output,"\t ]} \n");
 
 		SLNextItem(iter);
 	}
-	fprintf(output,"}}");
+	fprintf(output,"]}");
 	fclose(output);
 	return;
 }
