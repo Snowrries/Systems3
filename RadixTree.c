@@ -2,20 +2,7 @@
 
 
 #include "radixtree.h"
-/*
- * Initialize a Node for the Radix Tree
- * Input: A char* Token String and Length of Token
- *
- * string: Contains Prefix Str
- * len: Contains len of Prefix Str
- * Child: Contains Pointer to Child of Node
- * Index: SortedListPtr Contains File/Freq Information/ Cannot be used in Tree
- * Next: Contains Pointer to Next Node
- * Parent: Contains Pointer to Parent Node
- *
- *
- * Output: A RadixNode
- */
+
 RadixPtr RadNodeCreate(char* str, int length){
 	RadixPtr newNode = (RadixPtr) malloc(sizeof(struct RadixNode));
 	newNode->string = malloc(sizeof(char) * length);
@@ -28,6 +15,7 @@ RadixPtr RadNodeCreate(char* str, int length){
 	return newNode;
 
 }
+
 IndexPtr IndexNodeCreate(char* path){
 	IndexPtr newNode = (IndexPtr) malloc(sizeof(struct Index));
 	newNode->file = path;
@@ -36,21 +24,14 @@ IndexPtr IndexNodeCreate(char* path){
 
 }
 
-/*
- * Constructs a RadixTreePtr
- * Input: None
- * Output: RootPtr of RadixTree
- */
+
 
 RadixPtr MakeLikeATree(){
 	RadixPtr headptr = RadNodeCreate(" ",0);
 	return headptr;
 }
 
-/*Inserts the token into the Tree
- *Input: Node of Parent Node and Child Node desired to insert
- *Output: Returns a SortedListPtr which contains information for File/Freq
- */
+
 SortedListPtr *InsertToken(RadixPtr Head,char* token){
 	RadixPtr Obj = RadNodeCreate(token,strlen(token));
 	Obj->Parent = Head;
@@ -96,10 +77,7 @@ SortedListPtr *InsertToken(RadixPtr Head,char* token){
 	Child = Obj;
 	return &(Obj->Index);
 }
-/*Compares two Keys contained two Nodes; Used for Sorting
- * Input: Two Tree Nodes
- * Output: if Key>Token return >0 , Key<Token return <0, Equal return 0
- */
+
 
 int CompareNodes(RadixPtr Key,RadixPtr Token){
 
@@ -127,11 +105,7 @@ void SLIndexDestruct(void* Node){
 	free(Del);
 
 }
-/*
- * Destroys the Tree
- * Input: Root Ptr of Tree
- * Output: None
- */
+
 void TreeDestruct(RadixPtr root){
 	SortedListIteratorPtr popo;
 	SortedListIteratorPtr nana;
@@ -150,10 +124,7 @@ void TreeDestruct(RadixPtr root){
 	free(root);
 	return;
 }
-/*Compares Two Strings and Finds Length of the matching prefix
- * Input: String to Compare to, String desired to be inserted, Length of Key, Length of insertstring
- * Output: Length of matching prefix characters
- */
+
 
 int PrefixFinder(char * key,char* insert,int keylen,int insertlen){
 	int i;
@@ -169,10 +140,7 @@ int PrefixFinder(char * key,char* insert,int keylen,int insertlen){
 	}
 	return insertlen;
 }
-/*Splits a Node to a prefix and suffix/ Suffix becomes a child node
- * Input: Node to Split and Length of the Prefix
- * Output: None but cuts the node
- */
+
 
 void NodeCutter(RadixPtr Node, int length){
 
@@ -196,10 +164,7 @@ void NodeCutter(RadixPtr Node, int length){
 
 
 }
-/*Locates the proper location to insert the token; calls Cut accordingly
- *Input: Parent Node, Child Node, token desired to be inputted
- *Output: SortedListPtr Index of File/Freq
- */
+
 
 void InsertLocator(RadixPtr Head,RadixPtr C,char* token,char* path){
 	int toklen =(int) strlen(token);
@@ -256,14 +221,8 @@ void InsertLocator(RadixPtr Head,RadixPtr C,char* token,char* path){
 
 }
 
-/*Complete
- * Traverses through the tree
- * Input: RootPtr of Tree
- * Output: Some sort of Struct that contains token, file, freq info
- *
- */
 
-//void PreorderTraverse(RadixPtr Head,SortedListPtr Indexes,StructFiller sF,char* token){
+
 
 void PreorderTraverse(RadixPtr Head,char* token){
 
@@ -277,6 +236,7 @@ void PreorderTraverse(RadixPtr Head,char* token){
 	}
 
 	strcat(token,Head->string);
+
 	/*
 	if(Head->Index !=NULL){
 	//	SLInsert(Indexes,sF(Head->Index,token));
