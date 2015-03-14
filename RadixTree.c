@@ -228,7 +228,7 @@ void PreorderTraverse(RadixPtr Head,char* token){
 
 
 	if(Head == NULL){
-		printf("Not good");
+
 		return;
 	}
 	if(Head->len == 0){
@@ -237,56 +237,26 @@ void PreorderTraverse(RadixPtr Head,char* token){
 
 	strcat(token,Head->string);
 
-	/*
+
 	if(Head->Index !=NULL){
-	//	SLInsert(Indexes,sF(Head->Index,token));
-		printf("So it does");
+
+
 		printf("%s", token);
-		if(Head->Child != NULL){
-		//PreorderTraverse(Head->Child,token);
-		}
-		else{
-			strncpy(token,token,strlen(token) - Head->len +1);
-			if(Head->Next == NULL){
-				Head = Head->Parent->Next;
-			//	PreorderTraverse(Head,token);
-					}
-			Head = Head->Next;
-		//	PreorderTraverse(Head,token);
+
 		}
 
-	}
-	*/
-	if(Head->Child == NULL){
-		printf("Ova Here");
-		printf("%s",token);
-		if(strlen(token) - Head->len == 0){
-			token[0] = 0;
-		}
-		else{
-		char* newtok = malloc(sizeof(char) * (strlen(token) - Head->len));
-		strncpy(newtok,token,strlen(token) - Head->len );
-		token = newtok;
-		printf("%s",token);
-		}
 
-		if(Head->Next == NULL){
-			Head = Head->Parent->Next;
 
-			PreorderTraverse(Head,token);
-		}
-		Head = Head->Next;
 
-		//printf("%d",Head->Parent->len);
-		//printf("%s",Head->Parent->string);
-		//PreorderTraverse(Head,token);
-	}
+	PreorderTraverse(Head->Child,token);
+	char* newtok = malloc(sizeof(char) * (strlen(token) - Head->len));
 
-	else{
-	printf("So it doesn't");
-	Head = Head->Child;
-	PreorderTraverse(Head,token);
-	}
+	strncpy(newtok,token,strlen(token) - Head->len );
+	token = newtok;
+
+	PreorderTraverse(Head->Next,token);
+
+
 
 
 }
