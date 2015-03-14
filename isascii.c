@@ -1,4 +1,4 @@
-
+#include "isascii.h"
 
 char text_chars[256] = {
 	/*                  BEL BS HT LF    FF CR    */
@@ -24,8 +24,8 @@ char text_chars[256] = {
 
 int
 looks_ascii(const unsigned char *buf, size_t nbytes)
-{
-	for (unsigned int i = 0; i < nbytes; i++) {
+{	unsigned int i;
+	for ( i = 0; i < nbytes; i++) {
 		// buf[i] == (buf+i);
 		// buf[i] == 0	
 		int t = text_chars[buf[i]];
@@ -67,7 +67,7 @@ fakemain(char **argv)
 
 	} else {
 		fprintf(stderr, "Failed to open file: %s\n", strerror(errno));
-		return errorno;
+		return errno;
 	}
 
 	if (fp != 0 && fclose(fp) && errno != 0) {

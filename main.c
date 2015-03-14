@@ -53,7 +53,7 @@ int dirTrav(const char *fds, RadixPtr *burlapSack){
 					closedir(a);
 					return 0;
 			}
-			matching(fds);
+			//matching(fds);
 			//This calls the tokenizerer.
 			
 		}
@@ -64,12 +64,12 @@ int dirTrav(const char *fds, RadixPtr *burlapSack){
 			printf("The process has too many files open. Consider gastric bypass.");
 		}
 		else if(errno == ENOMEM){
-			printf("Not enough memory... ? What's got your ram in a bunch?")
+			printf("Not enough memory... ? What's got your ram in a bunch?");
 		}
 		
 	}
 	/*So it is a directory! Let's iterate through and recurse everything we find.*/
-	while(c=readdir(a))!= NULL{
+	while(c=readdir(a)!= NULL){
 		dirTrav(c->d_name, burlapSack);
 	}
 	/*End of journey. Go back to previous frame.*/

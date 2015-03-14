@@ -22,7 +22,7 @@ char c;
 if(iptr->used < iptr->length){
 	c = iptr->buffer[iptr->used];
 	iptr->used ++;
-	return c;
+	return tolower(c);
 }
 
 else if ( iptr->length == iptr->used){
@@ -43,7 +43,7 @@ return 0;
 }
 
 
-void writetofile(RadixPtr,char* file){
+void writetofile(RadixPtr Root,char* file){
 	FILE* output = fopen(file,"w");
 	SortedListPtr ACertainMagicalIndex;
 	RadixPtr ACertainScientificRailgun;
@@ -51,7 +51,7 @@ void writetofile(RadixPtr,char* file){
 	ACertainScientificRailgun = MakeLikeATree();
 	char token[30];
 	token[0]= 0;
-	ACertainMagicalIndex = PreorderTraverse(ACertainScientificRailgun,token);
+	//ACertainMagicalIndex = PreorderTraverse(ACertainScientificRailgun,token);
 	iter = SLCreateIterator(ACertainMagicalIndex);
 
 	while(iter != NULL){
@@ -76,16 +76,16 @@ void tokenizer(char* path){
 	    char c;
 	    int i = 0;
 
-	    c = readInput(ReadFile);
+	    c = readinput(ReadFile);
 
 	    while(!isalnum(c)){
-	    	c = readInput(ReadFile);
+	    	c = readinput(ReadFile);
 	    }
 
 }
 
 void InsertStringtoTree(RadixPtr Root,char* token,char* path){
-		InsertLocator(Root,token,path);
+		InsertLocator(Root,Root->Child,token,path);
 
 }
 
