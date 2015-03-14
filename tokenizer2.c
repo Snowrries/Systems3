@@ -13,7 +13,7 @@ void resetinput(struct input *iptr, int fd){
 	iptr->used = 0;
 	iptr->length= 0;
 }
-Reader CreateReader(char* path){
+Reader CreateReader(const char* path){
 		FILE* file = fopen(path , "r");
 		Reader FilePtr = (Reader) malloc(sizeof(Reader));
 		FilePtr->fd = fileno(file);
@@ -77,7 +77,7 @@ char* tokenize(Reader FilePtr){
 				len *= 2;
 			}
 
-			strcat(token,c);
+			token[i] = c;
 			i++;
 		}
 	c =readinput(FilePtr);

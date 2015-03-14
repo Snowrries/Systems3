@@ -23,7 +23,7 @@ struct RadixNode{
 };
 
 struct Index{
-	char* file;
+	const char* file;
 	int freq;
 
 };
@@ -57,7 +57,7 @@ RadixPtr RadNodeCreate(char*,int);
  * Input: String with the file name
  * Output: A IndexNode
  */
-IndexPtr IndexNodeCreate(char*);
+IndexPtr IndexNodeCreate(const char*);
 /*
  * Constructs a RadixTreePtr
  * Input: None
@@ -121,7 +121,7 @@ void NodeCutter(RadixPtr,int);
  *Input: Parent Node, Child Node, token desired to be inputted
  *Output: SortedListPtr Index of File/Freq
  */
-void InserttoTree(RadixPtr,RadixPtr,char*,char*);
+void InserttoTree(RadixPtr,RadixPtr,char*,const char*);
 
 
 #endif /* RADIXTREE_H_ */

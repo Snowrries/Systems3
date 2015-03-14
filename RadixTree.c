@@ -16,7 +16,7 @@ RadixPtr RadNodeCreate(char* str, int length){
 
 }
 
-IndexPtr IndexNodeCreate(char* path){
+IndexPtr IndexNodeCreate(const char* path){
 	IndexPtr newNode = (IndexPtr) malloc(sizeof(struct Index));
 	newNode->file = path;
 	newNode->freq = 1;
@@ -166,7 +166,7 @@ void NodeCutter(RadixPtr Node, int length){
 }
 
 
-void InserttoTree(RadixPtr Head,RadixPtr C,char* token,char* path){
+void InserttoTree(RadixPtr Head,RadixPtr C,char* token,const char* path){
 	int toklen =(int) strlen(token);
 	SortedListPtr *Result;
 	cmptype compare = &CompareBucket;

@@ -9,17 +9,10 @@
 #include <ctype.h>
 #include <errno.h>
 #include "isascii.h"
-//#include "tokenizer.c"
-#include "tokenizer2.c"
+#include "tokenizer2.h"
 #include "RadixTree.h"
-#include "sorted-list.h"
 
-struct input{
-	int fd;
-	char buffer[2048];
-	int length;
-	int used;
-};
+
 
 
 struct Indexee{
@@ -35,7 +28,7 @@ void DestroyIndex(void*);
 
 void* StructFill(void*,void*);
 
-void InsertStringtoTree(RadixPtr,char*,char*);
+void InsertStringtoTree(RadixPtr,char*,const char*);
 
 void writetofile(RadixPtr,char* file);
 

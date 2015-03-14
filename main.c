@@ -16,61 +16,6 @@
 	every time we call the function, such that we can append it to file name collisions.
 	*/
 	
-int dirTrav(const char *fds, RadixPtr *burlapSack){
-	DIR *a;
-	struct dirent *c;
-	char *desu;
-	size_t bufflen;
-	bufflen = 30;
-	desu = malloc(bufflen*sizeof(char));
-	
-	if(readlink(fds, desu, bufflen)!= -1){
-		
-		/*It's a symlink!*/
-		while(bufflen == readlink(fds, desu, bufflen)){
-			bufflen += 10;
-		}
-		
-		dirTrav(desu, burlapSack);
-	}
-	if(errno == EACCES){
-		printf("File permissions insufficient.");
-		return 0;
-	}
-	else if(errno == ENOENT){
-		printf("Uhoh, the file's gone. Please check inputted filename and question file's existentiality.");
-		return 0;
-	}
-	/*In other cases, it's just plainly not a simlink. */
-
-	a = opendir(fds);
-	if(a == NULL){
-		if(errno == ENOTDIR){/*Not simlink? Not Dir? We'll assume it's a file.*/
-			if(fakemain(fds) != 1){/*It's not a text file. */
-					free(desu);
-					closedir(a);
-					return 0;
-			}
-			//matching(fds);
-			//This calls the tokenizerer.
-			
-		}
-		else if(errno == EACCES){
-			printf("You haven't the permissions to access this directory.");
-		}
-		else if(errno == EMFILE){
-			printf("The process has too many files open. Consider gastric bypass.");
-		}
-		else if(errno == ENOMEM){
-			printf("Not enough memory... ? What's got your ram in a bunch?");
-		}
-		
-	}
-
-	return 0;
-	
-}
-
 
 
 /*

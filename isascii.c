@@ -38,7 +38,7 @@ looks_ascii(const unsigned char *buf, size_t nbytes)
 }
 /*returns 1 if the file is ascii, 0 if not, errno if error.*/
 int
-fakemain(char **argv)
+fakemain(const char **argv)
 {
 	FILE *fp = 0;
 

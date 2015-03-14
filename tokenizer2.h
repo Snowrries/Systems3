@@ -20,7 +20,7 @@ struct input{
 
 typedef struct input* Reader;
 
-Reader CreateReader(char*);
+Reader CreateReader(const char*);
 
 void DestroyReader(Reader);
 
