@@ -11,7 +11,6 @@
 int main(int argc, char** argv){
 	RadixPtr ygg;	
 	int n;
-	n = atoi(argv[3]);
 	if(argc !=4){
 		printf("Invalid Numbers of Arguments");
 		return 0;
@@ -44,7 +43,7 @@ int main(int argc, char** argv){
 		printf("File or Directory does not exist");
 		return 0;
 	}
-	
+        n = atoi(argv[3]);
 	ygg = MakeLikeATree();
 	dirTrav(argv[2], ygg, n);
 	writetofile(ygg,argv[1]);
