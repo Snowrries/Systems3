@@ -24,11 +24,17 @@ RadixPtr RadNodeCreate(char* str, int length){
 	newNode->Child = NULL;
 	newNode->Index = NULL;
 	newNode->Next = NULL;
-	newNode->Parent=NULL;
+	newNode->Parent = NULL;
 	return newNode;
 
 }
+IndexPtr IndexNodeCreate(char* path){
+	IndexPtr newNode = (IndexPtr) malloc(sizeof(struct Index));
+	newNode->file = path;
+	newNode->freq = 1;
+	return newNode;
 
+}
 
 /*
  * Constructs a RadixTreePtr
@@ -45,7 +51,7 @@ RadixPtr MakeLikeATree(){
  *Input: Node of Parent Node and Child Node desired to insert
  *Output: Returns a SortedListPtr which contains information for File/Freq
  */
-SortedListPtr InsertToken(RadixPtr Head,char* token){
+SortedListPtr *InsertToken(RadixPtr Head,char* token){
 	RadixPtr Obj = RadNodeCreate(token,strlen(token));
 	Obj->Parent = Head;
 
@@ -56,7 +62,7 @@ SortedListPtr InsertToken(RadixPtr Head,char* token){
 	if(Child == NULL){
 		Head->Child = Obj;
 
-		return Obj->Index;
+		return &(Obj->Index);
 	}
 
 	//Go through the list of Child Nodes of Parent Node Head
@@ -69,18 +75,18 @@ SortedListPtr InsertToken(RadixPtr Head,char* token){
 			if(Prev == Head){
 				Obj->Next = Child;
 				(Prev)->Child = Obj;
-				return Obj->Index;
+				return &(Obj->Index);
 
 			}
 				Obj->Next = Child;
 				(Prev)->Next = Obj;
 
-				return Obj->Index;
+				return &(Obj->Index);
 			}
 		//If there is a duplicate no need to insert Node
 		else if(cmpresult == 0){
 
-			return Head->Index;
+			return &(Head->Index);
 		}
 		Prev = Child;
 		Child = (Child)->Next;
@@ -88,7 +94,7 @@ SortedListPtr InsertToken(RadixPtr Head,char* token){
 	}
 
 	Child = Obj;
-	return Obj->Index;
+	return &(Obj->Index);
 }
 /*Compares two Keys contained two Nodes; Used for Sorting
  * Input: Two Tree Nodes
@@ -101,6 +107,25 @@ int CompareNodes(RadixPtr Key,RadixPtr Token){
 		return -1;
 	}
 	return strcmp(Key->string,Token->string);
+}
+
+
+
+int CompareIndex(void* K, void* I){
+	IndexPtr Key = (IndexPtr) K;
+	IndexPtr Insert = (IndexPtr) I;
+	int result = strcmp(Key->file,Insert->file);
+	if(result == 0){
+		Key->freq++;
+	}
+	return result;
+}
+
+void SLIndexDestruct(void* Node){
+	IndexPtr Del = (IndexPtr) Node;
+	Del->file = NULL;
+	free(Del);
+
 }
 /*
  * Destroys the Tree
@@ -167,6 +192,7 @@ void NodeCutter(RadixPtr Node, int length){
 	SuffixNode->Parent = Node;
 	Node->Child = SuffixNode;
 	Node->Index = NULL;
+	Node->len = strlen(prefix);
 
 
 }
@@ -175,13 +201,23 @@ void NodeCutter(RadixPtr Node, int length){
  *Output: SortedListPtr Index of File/Freq
  */
 
-void InsertLocator(RadixPtr Head,RadixPtr C,char* token){
+void InsertLocator(RadixPtr Head,RadixPtr C,char* token,char* path){
 	int toklen =(int) strlen(token);
-
-
+	SortedListPtr *Result;
+	cmptype compare = &CompareIndex;
+	deltype delete = &SLIndexDestruct;
+	IndexPtr newIndex;
 	if(C == NULL){
+		Result = InsertToken(Head,token);
 
-		 InsertToken(Head,token);
+
+		 if(*Result == NULL){
+
+			(*Result) = (SLCreate(compare,delete));
+
+		 }
+		 newIndex = IndexNodeCreate(path);
+		 SLInsert(*Result, newIndex );
 		 return;
 	}
 
@@ -189,7 +225,8 @@ void InsertLocator(RadixPtr Head,RadixPtr C,char* token){
 
 	if(prelen == 0){
 
-		return InsertLocator(Head,C->Next,token);
+		InsertLocator(Head,C->Next,token,path);
+		return;
 	}
 
 	else if(prelen < toklen){
@@ -205,13 +242,18 @@ void InsertLocator(RadixPtr Head,RadixPtr C,char* token){
 		Head = C;
 		C = C->Child;
 
-		InsertLocator(Head,C,token);
+		InsertLocator(Head,C,token,path);
 		 return;
 
 	}
-	InsertToken(Head,token);
+	Result = InsertToken(Head,token);
+	 if(*Result == NULL){
+		(*Result) = (SLCreate(compare,delete));
+	}
+	 newIndex = IndexNodeCreate(path);
+	 SLInsert(*Result, newIndex );
+	  return;
 
-	return;
 }
 
 /*Complete
@@ -221,42 +263,69 @@ void InsertLocator(RadixPtr Head,RadixPtr C,char* token){
  *
  */
 
+//void PreorderTraverse(RadixPtr Head,SortedListPtr Indexes,StructFiller sF,char* token){
 
-
-void PreorderTraverse(RadixPtr Head,SortedListPtr Indexes,StructFiller sF,char* token){
+void PreorderTraverse(RadixPtr Head,char* token){
 
 
 	if(Head == NULL){
+		printf("Not good");
 		return;
 	}
-	if(Head->Child == NULL){
-		strncpy(token,token,strlen(token) - Head->len +1);
-		if(Head->Next == NULL){
-			Head = Head->Parent->Next;
-			PreorderTraverse(Head,Indexes,sF,token);
-		}
-		Head = Head->Next;
-		PreorderTraverse(Head,Indexes,sF,token);
+	if(Head->len == 0){
+		return;
 	}
 
 	strcat(token,Head->string);
+	/*
 	if(Head->Index !=NULL){
-		SLInsert(Indexes,sF(Head->Index,token));
-
+	//	SLInsert(Indexes,sF(Head->Index,token));
+		printf("So it does");
+		printf("%s", token);
 		if(Head->Child != NULL){
-		PreorderTraverse(Head->Child,Indexes,sF,token);
+		//PreorderTraverse(Head->Child,token);
 		}
 		else{
 			strncpy(token,token,strlen(token) - Head->len +1);
+			if(Head->Next == NULL){
+				Head = Head->Parent->Next;
+			//	PreorderTraverse(Head,token);
+					}
 			Head = Head->Next;
-			PreorderTraverse(Head,Indexes,sF,token);
+		//	PreorderTraverse(Head,token);
 		}
 
 	}
+	*/
+	if(Head->Child == NULL){
+		printf("Ova Here");
+		printf("%s",token);
+		if(strlen(token) - Head->len == 0){
+			token[0] = 0;
+		}
+		else{
+		char* newtok = malloc(sizeof(char) * (strlen(token) - Head->len));
+		strncpy(newtok,token,strlen(token) - Head->len );
+		token = newtok;
+		printf("%s",token);
+		}
+
+		if(Head->Next == NULL){
+			Head = Head->Parent->Next;
+
+			PreorderTraverse(Head,token);
+		}
+		Head = Head->Next;
+
+		//printf("%d",Head->Parent->len);
+		//printf("%s",Head->Parent->string);
+		//PreorderTraverse(Head,token);
+	}
 
 	else{
+	printf("So it doesn't");
 	Head = Head->Child;
-	PreorderTraverse(Head,Indexes,sF,token);
+	PreorderTraverse(Head,token);
 	}
 
 
