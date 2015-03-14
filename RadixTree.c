@@ -5,7 +5,6 @@
 
 RadixPtr RadNodeCreate(char* str, int length){
 	RadixPtr newNode = (RadixPtr) malloc(sizeof(struct RadixNode));
-	newNode->string = malloc(sizeof(char) * length);
 	newNode->string = str;
 	newNode->len = length;
 	newNode->Child = NULL;
