@@ -1,26 +1,68 @@
 { "list" : [ 
-		 { "aaaaaaaaapopcorncornpop" : [ 
-		{ "waaah" : 4 }
+		 { "actual" : [ 
+		{ "testy/interestingname.txt" : 1 }
 	 ]} 
-		 { "bbbbbbbbbwormholewormhole" : [ 
-		{ "waaah" : 4 }
+		 { "an" : [ 
+		{ "testy/interestingname.txt" : 1 }
 	 ]} 
-		 { "boooop" : [ 
-		{ "waaah" : 1 }
+		 { "but" : [ 
+		{ "testy/interestingname.txt" : 1 }
 	 ]} 
-		 { "boop" : [ 
-		{ "waaah" : 1 }
+		 { "does" : [ 
+		{ "testy/follow/testtext" : 1 }
 	 ]} 
-		 { "ccccccccclongwordslongwords" : [ 
-		{ "waaah" : 4 }
+		 { "doooessssssssssitfollowwwwwwwwwwwwwwwWW" : [ 
+		{ "testy/follow/testtext" : 1 }
 	 ]} 
-		 { "dddddddddarmedaardvark" : [ 
-		{ "waaah" : 4 }
+		 { "extensions" : [ 
+		{ "testy/follow/testtext" : 1 }
 	 ]} 
-		 { "eeeeeeeeeblazingblombers" : [ 
-		{ "waaah" : 4 }
+		 { "file" : [ 
+		{ "testy/interestingname.txt" : 1 }
 	 ]} 
-		 { "waaa" : [ 
-		{ "waaah" : 1 }
+		 { "files" : [ 
+		{ "testy/follow/testtext" : 1 }
+	 ]} 
+		 { "follow" : [ 
+		{ "testy/follow/testtext" : 1 }
+	 ]} 
+		 { "here" : [ 
+		{ "testy/interestingname.txt" : 1 }
+	 ]} 
+		 { "in" : [ 
+		{ "testy/interestingname.txt" : 1 }
+	 ]} 
+		 { "it" : [ 
+		{ "testy/follow/testtext" : 1 }
+	 ]} 
+		 { "let" : [ 
+		{ "testy/interestingname.txt" : 1 }
+	 ]} 
+		 { "put" : [ 
+		{ "testy/interestingname.txt" : 1 }
+	 ]} 
+		 { "s" : [ 
+		{ "testy/interestingname.txt" : 1 }
+	 ]} 
+		 { "some" : [ 
+		{ "testy/interestingname.txt" : 1 }
+	 ]} 
+		 { "symbols" : [ 
+		{ "testy/interestingname.txt" : 1 }
+	 ]} 
+		 { "text" : [ 
+		{ "testy/interestingname.txt" : 1 }
+	 ]} 
+		 { "uh" : [ 
+		{ "testy/interestingname.txt" : 1 }
+	 ]} 
+		 { "weird" : [ 
+		{ "testy/follow/testtext" : 1 }
+	 ]} 
+		 { "with" : [ 
+		{ "testy/follow/testtext" : 1 }
+	 ]} 
+		 { "woo" : [ 
+		{ "testy/interestingname.txt" : 1 }
 	 ]} 
 ]}
