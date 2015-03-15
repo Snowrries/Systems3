@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-struct RadixNode{
+struct RadixNode {
 
 	char* string;
 	int len;
@@ -22,12 +22,11 @@ struct RadixNode{
 	struct RadixNode * Parent;
 };
 
-struct Index{
-	char* file;	
+struct Index {
+	char* file;
 	int freq;
 
 };
-
 
 typedef struct RadixNode* RadixPtr;
 
@@ -37,7 +36,7 @@ typedef int (*cmptype)(void*, void*);
 
 typedef void (*deltype)(void*);
 
-typedef void* (*StructFiller)(void*,void*);
+typedef void* (*StructFiller)(void*, void*);
 /*
  * Initialize a Node for the Radix Tree
  * Input: A char* Token String and Length of Token
@@ -52,7 +51,7 @@ typedef void* (*StructFiller)(void*,void*);
  *
  * Output: A RadixNode
  */
-RadixPtr RadNodeCreate(char*,int);
+RadixPtr RadNodeCreate(char*, int);
 /* Intializes a Node for the BucketList
  * Input: String with the file name and length of the string
  * Output: A IndexNode
@@ -69,26 +68,26 @@ RadixPtr MakeLikeATree(); //and leaf
  *Input: Node of Parent Node and Child Node desired to insert
  *Output: Returns a SortedListPtr which contains information for File/Freq
  */
-SortedListPtr *InsertToken(RadixPtr,char*);
+SortedListPtr *InsertToken(RadixPtr, char*);
 
 /*Compares Two Strings and Finds Length of the matching prefix
  * Input: String to Compare to, String desired to be inserted, Length of Key, Length of insertstring
  * Output: Length of matching prefix characters
  */
-int PrefixFinder(char *,char*,int,int);
+int PrefixFinder(char *, char*, int, int);
 
 /*Compares two Keys contained two Nodes; Used for Sorting
  * Input: Two Tree Nodes
  * Output: if Key>Token return >0 , Key<Token return <0, Equal return 0
  */
 
-int CompareNodes(RadixPtr,RadixPtr);
+int CompareNodes(RadixPtr, RadixPtr);
 
 /*Compares two Keys contained two BucketNodes; Used for Sorting files
  * Input: Two Bucket Nodes
  * Output: if Key>Token return >0 , Key<Token return <0, Equal increment Freq and return 0
  */
-int CompareBucket(void*,void*);
+int CompareBucket(void*, void*);
 
 /*Destruct function for SLBuckets Nodes
  * Input: A Bucket Node
@@ -109,23 +108,19 @@ void TreeDestruct(RadixPtr root);
  * Output: Some sort of Struct that contains token, file, freq info
  *
  */
-void PreorderTraverse(RadixPtr,char*,SortedListPtr,StructFiller);
+void PreorderTraverse(RadixPtr, char*, SortedListPtr, StructFiller);
 
 /*Splits a Node to a prefix and suffix/ Suffix becomes a child node
  * Input: Node to Split and Length of the Prefix
  * Output: None but cuts the node
  */
-void NodeCutter(RadixPtr,int);
+void NodeCutter(RadixPtr, int);
 
 /*Locates the proper location to insert the token; calls Cut accordingly
  *Input: Parent Node, Child Node, token desired to be inputted
  *Output: SortedListPtr Index of File/Freq
  */
-void Find(RadixPtr,RadixPtr,char*,const char*);
-
+void Find(RadixPtr, RadixPtr, char*, const char*);
 
 #endif /* RADIXTREE_H_ */
-
-
-
 

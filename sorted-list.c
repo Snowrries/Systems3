@@ -6,7 +6,7 @@
 #include "sorted-list.h"
 #include <stdio.h>
 
-SortedListPtr SLCreate(CompareFuncT cf, DestructFuncT df){
+SortedListPtr SLCreate(CompareFuncT cf, DestructFuncT df) {
 	SortedListPtr newList = malloc(sizeof(SortedListPtr));
 	newList->Compare = cf;
 	newList->Destruct = df;
@@ -15,12 +15,12 @@ SortedListPtr SLCreate(CompareFuncT cf, DestructFuncT df){
 	return newList;
 }
 
-void SLDestroy(SortedListPtr list){
+void SLDestroy(SortedListPtr list) {
 	//Destroy the list
-	if(list == NULL){
+	if (list == NULL) {
 		return;
 	}
-	while(list->Headptr != NULL){
+	while (list->Headptr != NULL) {
 		//NodePtr NodetoDelete = malloc(sizeof(NodePtr));
 		NodePtr NodetoDelete;
 		NodetoDelete = list->Headptr;
@@ -31,25 +31,23 @@ void SLDestroy(SortedListPtr list){
 
 }
 
-SortedListIteratorPtr SLCreateIterator(SortedListPtr list){
+SortedListIteratorPtr SLCreateIterator(SortedListPtr list) {
 	SortedListIteratorPtr newIterator = malloc(sizeof(SortedListIteratorPtr));
 	//Create a new iterator if list is empty iterator points to NULL
-	if(list->Headptr != NULL)
-	{
+	if (list->Headptr != NULL) {
 		newIterator->Node = list->Headptr;
 		newIterator->Node->Seppuku = list->Destruct;
 		incrementreference(list->Headptr);
 		return newIterator;
-	}
-	else
+	} else
 		free(newIterator);
-		return NULL;
+	return NULL;
 }
 
-void SLDestroyIterator(SortedListIteratorPtr iter){
+void SLDestroyIterator(SortedListIteratorPtr iter) {
 	//The node that the iterator is pointing to loses a referencecount when iterator is removed
-	if((iter->Node != NULL)){
-		if(decrementreference(iter->Node) == 0){
+	if ((iter->Node != NULL)) {
+		if (decrementreference(iter->Node) == 0) {
 			NodeSeppuku(iter->Node);
 		}
 	}
@@ -57,64 +55,60 @@ void SLDestroyIterator(SortedListIteratorPtr iter){
 	free(iter);
 
 }
-void *SLGetItem( SortedListIteratorPtr iter ){
+void *SLGetItem(SortedListIteratorPtr iter) {
 	return iter->Node->data;
 }
-void *SLNextItem(SortedListIteratorPtr iter){
+void *SLNextItem(SortedListIteratorPtr iter) {
 	int ref = decrementreference(iter->Node);
 	NodePtr temp;
 	temp = iter->Node;
 	iter->Node = iter->Node->next;
-	if(iter->Node == NULL){
+	if (iter->Node == NULL) {
 		return NULL;
 	}
-	if(ref == 0){
+	if (ref == 0) {
 		NodeSeppuku(temp);
 	}
-
 
 	incrementreference(iter->Node);
 	return iter->Node->data;
 
 }
-int SLInsert(SortedListPtr list, void *newObj){
-	SortedListIteratorPtr Iter = SLCreateIterator(list); 	//Create a temporary iterator
+int SLInsert(SortedListPtr list, void *newObj) {
+	SortedListIteratorPtr Iter = SLCreateIterator(list); //Create a temporary iterator
 	NodePtr newNode;	//newNode object
 	NodePtr prevNode;
 	void *Comparator;//Comparator is data from the list to compare; starts from data in headptr
 	newNode = NodeCreate(newObj, (list->Destruct)); //Create a Node containing given data
 	prevNode = NULL;
-	if(list->Headptr == NULL)  //if the list is empty just make headptr point to the newNode
-		{
+	if (list->Headptr == NULL) //if the list is empty just make headptr point to the newNode
+	{
 
 		list->Headptr = newNode;
 		incrementreference(newNode);
 		return 1;
-		}
-	else {
+	} else {
 
 		Comparator = SLGetItem(Iter);
 		int a = list->Compare(Comparator, newObj);
-		printf("Compare: %d\n",a);
-		while(a < 0 && Comparator != NULL){ //If the compare function returns >0 means if newObj is less than or equal to compared object (List is ordered from largest to smallest
+		printf("Compare: %d\n", a);
+		while (a < 0 && Comparator != NULL) { //If the compare function returns >0 means if newObj is less than or equal to compared object (List is ordered from largest to smallest
 			prevNode = Iter->Node;
 			Comparator = SLNextItem(Iter);
 			a = list->Compare(Comparator, newObj);
 
 		}
 
-		if (a == 0){ //Throw out if duplicate is found
+		if (a == 0) { //Throw out if duplicate is found
 
 			SLDestroyIterator(Iter);
 			return 0;
-		}
-		else {
+		} else {
 			newNode->next = Iter->Node;
 			incrementreference(newNode);
-			if(prevNode != NULL){
+			if (prevNode != NULL) {
 				prevNode->next = newNode;
-			}
-			else{
+			} else {
 				list->Headptr = newNode;
 			}
 		}
@@ -126,33 +120,31 @@ int SLInsert(SortedListPtr list, void *newObj){
 
 }
 
-int SLRemove(SortedListPtr list, void *newObj){
+int SLRemove(SortedListPtr list, void *newObj) {
 	SortedListIteratorPtr Iter = SLCreateIterator(list); //Temp iterator
 	NodePtr prevNode = NULL;
 	void *Comparator; //Samething as in Slinsert
-	if(list->Headptr != NULL){
+	if (list->Headptr != NULL) {
 		Comparator = SLGetItem(Iter);
 
-		while(list->Compare(Comparator, newObj) != 0){
-				prevNode = Iter->Node;
-				Comparator = SLNextItem(Iter);
-					if(Comparator == NULL){ //if object not found and comparator has reached the end of the list....end and return failure
-					return 0;
-				}
+		while (list->Compare(Comparator, newObj) != 0) {
+			prevNode = Iter->Node;
+			Comparator = SLNextItem(Iter);
+			if (Comparator == NULL) { //if object not found and comparator has reached the end of the list....end and return failure
+				return 0;
+			}
 		}
-		
-		if(prevNode != NULL){
-	
+
+		if (prevNode != NULL) {
+
 			prevNode->next = Iter->Node->next;
+		} else {
+			list->Headptr = Iter->Node->next;
 		}
-		else{
-				list->Headptr = Iter->Node->next;
-		}
-		if(decrementreference(Iter->Node) == 0){
+		if (decrementreference(Iter->Node) == 0) {
 			NodeSeppuku(Iter->Node);
-		}
-		else if(Iter->Node->next != NULL){
-			incrementreference(Iter->Node->next);//desu
+		} else if (Iter->Node->next != NULL) {
+			incrementreference(Iter->Node->next); //desu
 		}
 		SLDestroyIterator(Iter); // Destroy temp iterator
 		return 1;

@@ -12,7 +12,6 @@
 #include "RadixTree.h"
 #define REGEXPAT "([a-z]([a-z]|[0-9])*)"
 
-
 struct TokenizerT_ {
 	//char * desu;
 	char * wholefile;
@@ -31,13 +30,13 @@ struct TokenizerT_ {
 
 typedef struct TokenizerT_ TokenizerT;
 
-//int looksascii(TokenizerT *mememe);
+int looksascii(TokenizerT *mememe);
 
-TokenizerT *TKCreate(const char * ts );
+TokenizerT *TKCreate(const char * ts);
 
-void TKDestroy( TokenizerT * tk );
+void TKDestroy(TokenizerT * tk);
 
-char *TKGetNextToken( TokenizerT * tk );
+char *TKGetNextToken(TokenizerT * tk);
 
 int TKhasNext(TokenizerT * tk);
 
