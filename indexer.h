@@ -11,6 +11,15 @@
 #include "isascii.h"
 #include "tokenizer.h"
 #include "RadixTree.h"
+#include <string.h> /* for strerror */
+/* Borrowed from ascmagic.c in the file source tree */
+
+#define Fii 0   /* character never appears in text */
+#define Tii 1   /* character appears in plain ASCII text */
+#define Iii 2   /* character appears in ISO-8859 text */
+#define Xii 3   /* character appears in non-ISO extended ASCII (Mac, IBM PC) */
+
+#define FR_BUFSIZ 4096
 
 
 
@@ -23,6 +32,12 @@ struct Indexee{
 };
 
 typedef struct Indexee* Indexee;
+
+
+/*Given a file*, returns 1 if the file is ASCII, 0 if not.*/
+ 
+//int looksascii(FILE* mememe);
+
 
 /*
  * CompareIndex is used by the RadixTree so that it can create a sorted list

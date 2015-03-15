@@ -31,7 +31,7 @@ struct TokenizerT_ {
 
 typedef struct TokenizerT_ TokenizerT;
 
-int looksascii(TokenizerT *mememe);
+//int looksascii(TokenizerT *mememe);
 
 TokenizerT *TKCreate(const char * ts );
 

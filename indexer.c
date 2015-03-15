@@ -7,9 +7,56 @@
 
 #include "indexer.h"
 
-/*
- *
- */
+char text_chars[256] = {
+        /*                  BEL BS HT LF    FF CR    */
+        Fii, Fii, Fii, Fii, Fii, Fii, Fii, Tii, Tii, Tii, Tii, Fii, Tii, Tii, Fii, Fii,  /* 0x0X */
+        /*                              ESC          */
+        Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Tii, Fii, Fii, Fii, Fii,  /* 0x1X */
+        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x2X */
+        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x3X */
+        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x4X */
+        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x5X */
+        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x6X */
+        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Fii,  /* 0x7X */
+        /*            NEL                            */
+        Xii, Xii, Xii, Xii, Xii, Tii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii,  /* 0x8X */
+        Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii,  /* 0x9X */
+        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xaX */
+        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xbX */
+        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xcX */
+        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xdX */
+        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xeX */
+        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii   /* 0xfX */
+};
+int
+looksascii(const char *meme)
+{
+	FILE* mememe;
+        char *desu;
+        size_t bufflen;
+        int getl;
+	int i;
+	mememe = fopen(meme, "r");
+        while((getl = getline(&desu, &bufflen, mememe)) > 0){
+        	for (i = 0; i < strlen(desu); i++ ) {
+                	int t = text_chars[(int)(desu[i])];
+	                if (t != Tii) {
+				fclose(mememe);
+				free(desu);
+        	                return 0;
+	                }
+		}
+       	 }
+	fclose(mememe);
+	free(desu);
+	return 1;
+    	
+}
+/*returns 1 if the file is ascii, 0 if not, errno if error.*/
+
+
+
+
 int CompareIndex(void* a,void* b) {
 	return -1;
 }
@@ -32,9 +79,6 @@ void* StructFill(void* toks, void* buk){
 void dirTrav(const char* path,RadixPtr root, int n){
 
 		DIR *directory;
-
-
-
 		char* newPath;
 		char *token;
 		TokenizerT *stuff;
@@ -77,14 +121,15 @@ void dirTrav(const char* path,RadixPtr root, int n){
 		        return;
 		    }
 
-
+	
 	struct stat *buf = (struct stat*) malloc(sizeof(struct stat));
 	stat(path,buf);
-	
+	if(looksascii(path)){
+
 	if(S_ISREG(buf->st_mode) ){
 		stuff = TKCreate(path);
 
-		if(looksascii(stuff)){
+//		if(looksascii(stuff)){
 			while(TKhasNext(stuff)){
 	        	        token = TKGetNextToken(stuff);
 				printf("indexer: %s\n", token);
@@ -93,8 +138,8 @@ void dirTrav(const char* path,RadixPtr root, int n){
 					InsertStringtoTree(root,token,path);
 	        	        }
 			}
-		}
 		TKDestroy(stuff);
+	}
 	return;	          
 		
 	}
