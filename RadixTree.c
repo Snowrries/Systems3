@@ -72,7 +72,7 @@ SortedListPtr *InsertToken(RadixPtr Head,char* token){
 		Child = (Child)->Next;
 
 	}
-
+	Prev->Next = Obj;
 	Child = Obj;
 	return &(Obj->Index);
 }
@@ -234,26 +234,21 @@ void PreorderTraverse(RadixPtr Head,char* token,SortedListPtr Output,StructFille
 
 		return;
 	}
-
 	strcat(token,Head->string);
-
 
 	if(Head->Index !=NULL){
 
 		SLInsert(Output,sF(token,Head->Index));
 
-
 		}
 
-
-
-
 	PreorderTraverse(Head->Child,token,Output,sF);
-	char* newtok = malloc(sizeof(char) * (strlen(token) - Head->len));
-
+	char* newtok = malloc(sizeof(char) *(1+ (strlen(token) - Head->len)));
+	newtok[0] = '\0';
 	strncpy(newtok,token,strlen(token) - Head->len );
 	token = newtok;
-
+	token[strlen(token)-1]='\0';
+	free(newtok);
 	PreorderTraverse(Head->Next,token,Output,sF);
 
 

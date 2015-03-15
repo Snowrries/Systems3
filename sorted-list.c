@@ -42,6 +42,7 @@ SortedListIteratorPtr SLCreateIterator(SortedListPtr list){
 		return newIterator;
 	}
 	else
+		free(newIterator);
 		return NULL;
 }
 

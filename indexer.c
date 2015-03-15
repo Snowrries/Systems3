@@ -143,6 +143,7 @@ void writetofile(RadixPtr Root,char* file){
 	ACertainMagicalIndex = SLCreate(CompareIndex,DestroyIndex);
 
 	char* token = malloc(sizeof(char)*30);
+        token[0] = '\0';
 	PreorderTraverse(Root->Child,token,ACertainMagicalIndex,ACertainScientificRailgun);
 
 	iter = SLCreateIterator(ACertainMagicalIndex);
