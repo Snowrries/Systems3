@@ -36,7 +36,7 @@ TokenizerT *TKCreate(const char * ts );
 
 void TKDestroy( TokenizerT * tk );
 
-char *TKGetNextToken( TokenizerT * tk, RadixPtr root, const char* path );
+char *TKGetNextToken( TokenizerT * tk );
 
 int TKhasNext(TokenizerT * tk);
 

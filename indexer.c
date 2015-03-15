@@ -85,12 +85,13 @@ void dirTrav(const char* path,RadixPtr root, int n){
 
 		stuff = TKCreate(path);
 		while(TKhasNext(stuff)){
-	                token = TKGetNextToken(stuff,root,path);
-	  //              if(token!=NULL){
-	//			printf("%s",token);
-		//		InsertStringtoTree(root,token,path);
-			//	
-	               // }
+	                token = TKGetNextToken(stuff);
+			printf("%s", token);
+	                if(token!=NULL){
+//				printf("%s",token);
+				InsertStringtoTree(root,token,path);
+				
+	                }
 		}
 		TKDestroy(stuff);
 		return;	          

@@ -31,9 +31,10 @@ TokenizerT *TKCreate(const char * filename ) {
 
 	tk->charsfromleft=(regoff_t)0;
 	tk->numtoken=0;
-	
+	return tk;
 
-  return tk;
+
+
 }
 void TKDestroy( TokenizerT * tk ) {
 	free(tk->untokened);
@@ -42,7 +43,8 @@ void TKDestroy( TokenizerT * tk ) {
 	//regfree(&(tk->keywordrx));
 	free(tk);
 }
-char *TKGetNextToken( TokenizerT * tk, RadixPtr root, const char* path ) {
+char *TKGetNextToken( TokenizerT * tk ) {
+		int i;
 		if(tk->hasNext){
 			return 0;
 		} 
@@ -56,12 +58,15 @@ char *TKGetNextToken( TokenizerT * tk, RadixPtr root, const char* path ) {
 		tk->charsfromleft+=tempCharsholder;
 		char *done = (char *)malloc((strlen(tokenz)+1)*sizeof(char)+1);
 		sprintf(done,"%s",  tokenz);
-		printf("%s\n", done);
+	//	printf("%s\n", done);
 		free(tokenz);
-		if(isalpha(done[0])!=0){
+		i = 0;
+		while(done[i]){
+			done[i] = tolower(done[i]);
+			i++;
+		} 
+	//	printf("%s\n", done);
 //gief root and path TKGetNextToken(stuff,root,path);
-			InserttoTree(root, root->Child, done, path );
-		}
 		return done;
 
 
