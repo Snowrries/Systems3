@@ -229,7 +229,9 @@ void PreorderTraverse(RadixPtr Head,char* token,SortedListPtr Output,StructFille
 
 		return;
 	}
+
 	if(Head->len == 0){
+
 		return;
 	}
 

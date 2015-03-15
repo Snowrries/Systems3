@@ -1,7 +1,7 @@
 #include "tokenizer.h"
 
 
-TokenizerT *TKCreate( char * filename ) {
+TokenizerT *TKCreate(const char * filename ) {
 	char *desu;
 	size_t bufflen;
 	int getl;
@@ -64,25 +64,4 @@ int TKhasNext(TokenizerT * tk){
 	}
 	return 0;
 }
-int main(int argc, char** argv){
-	FILE *fp;
-	char *token;
-   TokenizerT *stuff;
-   fp = fopen("/tmp/test.txt", "w+");
-   fprintf(fp, "This is testing for fprintf...\n");
-   fputs("This is testing for fputs...\n", fp);
-   fclose(fp);
-   stuff = TKCreate("/tmp/test.txt");
-	while(TKhasNext(stuff)){
-		token = TKGetNextToken(stuff);
-		if(token!=NULL){
-		printf("%s\n", token );
-		free(token);
-		}
-	}
-//  while((print = TKGetNextToken(stuff))!=0){
-//	   printf("%s", print);
-//   }
-   TKDestroy(stuff);
-  return 0;
-}
+

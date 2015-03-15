@@ -14,7 +14,7 @@
 typedef unsigned long unichar;
 
 /*returns 1 if the file is ascii, 0 if not, errno if error.*/
-int fakemain(const char **argv);
+int fakemain(char **argv);
 
 /*	checks every byte in the file against the hardcoded 
 	char array and returns 0 if a non-ascii char is found.

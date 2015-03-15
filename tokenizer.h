@@ -32,7 +32,7 @@ struct TokenizerT_ {
 typedef struct TokenizerT_ TokenizerT;
 
 
-TokenizerT *TKCreate( char * ts );
+TokenizerT *TKCreate(const char * ts );
 
 void TKDestroy( TokenizerT * tk );
 
