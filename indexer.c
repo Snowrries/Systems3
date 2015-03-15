@@ -11,7 +11,7 @@
  *
  */
 int CompareIndex(void* a,void* b) {
-	return 1;
+	return -1;
 }
 
 void DestroyIndex(void* a){
@@ -32,62 +32,84 @@ void* StructFill(void* toks, void* buk){
 void dirTrav(const char* path,RadixPtr root, int n){
 
 		DIR *directory;
-		Reader fileread;
-		char* tok;
-		char* newPath;
+		//Reader fileread;
+
+	//	char* tok;
+
+		//char* newPath;
 		int pathLen;
 		int nextlen;
 
-
 		char *desu;
-		size_t bufflen;
-		bufflen = 30;
-		desu = malloc(bufflen*sizeof(char));
+				size_t bufflen;
+				bufflen = 30;
+				desu = malloc(bufflen*sizeof(char));
 
-		if(readlink(path, desu, bufflen)!= -1){
-			/*It's a symlink!*/
-			if(n == 0){ /*Not following symlinks*/
-				return;
-			}
-			while(bufflen == readlink(path, desu, bufflen)){
-				bufflen += 10;
-			}
+				if(readlink(path, desu, bufflen)!= -1){
+					/*It's a symlink!*/
+					if(n == 0){ /*Not following symlinks*/
+						return;
+					}
+					while(bufflen == readlink(path, desu, bufflen)){
+						bufflen += 10;
+					}
 
-			dirTrav(desu, root, n);
-		}
-		if(errno == EACCES){
-			printf("File permissions insufficient.");
-			return;
-		}
-		else if(errno == ENOENT){
-			printf("Uhoh, the file's gone. Please check inputted filename and question file's existentiality.");
-			return ;
-		}
+					dirTrav(desu, root, n);
+				}
+				if(errno == EACCES){
+					printf("File permissions insufficient.");
+					return;
+				}
+				else if(errno == ENOENT){
+					printf("Uhoh, the file's gone. Please check inputted filename and question file's existentiality.");
+					return ;
+				}
 
 
 //Directory traverse
-	if(strcmp(path, "..") != 0){
-		return;
-	}
 
-	struct stat *info = (struct stat*) malloc(sizeof(struct stat));
-	stat(path,info);
-	if(S_ISREG(info->st_mode) && fakemain(&path) == 1){
-		fileread = CreateReader(path);
-		while((tok = tokenize(fileread)) != NULL){
+		  if (strcmp(path, "..") != 0 && strcmp(path+strlen(path)-2, "..") == 0) {
+		        return;
+		    }
 
-			InsertStringtoTree(root,tok,path);
+		    if (strcmp(path, ".") != 0 && strcmp(path, "..") != 0 && strcmp(path+strlen(path)-1, ".") == 0) {
+		        return;
+		    }
+
+
+	struct stat *buf = (struct stat*) malloc(sizeof(struct stat));
+	stat(path,buf);
+
+	if(S_ISREG(buf->st_mode) ){
+			printf("%s", path);
+			return;
 
 		}
-		return;
 
-	}
+
+
+		//fileread = CreateReader(path);
+
+		//while((tok = tokenize(fileread)) != NULL){
+
+		//	InsertStringtoTree(root,tok,path);
+
+	//	}
+	//	DestroyReader(fileread);
+	//	return;
+
+
+
 	directory = opendir(path);
-	struct dirent *nextDir;
+	struct dirent *nextDir = NULL;
+	free(buf);
 
-	while((nextDir = readdir(directory))){
-		newPath = (char*)malloc((strlen(path) + strlen(nextDir->d_name)+1) *sizeof(char));
+	while((nextDir = readdir(directory)) !=NULL){
 
+		char* newPath = (char*)malloc((strlen(path) + strlen(nextDir->d_name)+2) *sizeof(char));
+		if(newPath == NULL){
+			return;
+		}
 
 	pathLen = strlen(path);
 	strncpy(newPath,path,pathLen);
@@ -96,48 +118,56 @@ void dirTrav(const char* path,RadixPtr root, int n){
 	newPath[pathLen] = '\0';
 	nextlen = strlen(nextDir->d_name);
 	strncat(newPath,nextDir->d_name,nextlen);
-	path = newPath;
-	dirTrav(path, root, n);
-	free(newPath);
-	}
+
+
+
+	        printf("\t %s \t",newPath);
+	        dirTrav(newPath, root, n);
+	        free(newPath);
+
+}
 	closedir(directory);
 }
-
-
 
 void writetofile(RadixPtr Root,char* file){
 	FILE* output = fopen(file,"w");
 	SortedListPtr ACertainMagicalIndex;
-	RadixPtr ACertainScientificRailgun;
+
 	SortedListIteratorPtr iter;
 	SortedListIteratorPtr BucketIter;
 	Indexee item;
 	IndexPtr Bucket;
-	StructFiller a = &StructFill;
+	StructFiller ACertainScientificRailgun = &StructFill;
 	ACertainMagicalIndex = SLCreate(CompareIndex,DestroyIndex);
-	ACertainScientificRailgun = Root;
-	char token[30];
-	token[0]= 0;
-	PreorderTraverse(ACertainScientificRailgun,token,ACertainMagicalIndex,a);
+
+	char* token = malloc(sizeof(char)*30);
+	PreorderTraverse(Root->Child,token,ACertainMagicalIndex,ACertainScientificRailgun);
+
 	iter = SLCreateIterator(ACertainMagicalIndex);
 	fprintf(output,"{ \"list\" : [ \n");
-	while(iter != NULL){
-		item = (Indexee)SLGetItem(iter);
+	item = (Indexee)SLGetItem(iter);
+		while (item !=NULL){
+
 		fprintf(output,"\t\t { \"%s\" : [ \n", item->token );
 		BucketIter = SLCreateIterator(item->Index);
-		while(BucketIter != NULL){
-			Bucket = (IndexPtr) SLGetItem(BucketIter);
-			fprintf(output,"\t\t{ \"%s\" : %d }\n",Bucket->file,Bucket->freq);
-			SLNextItem(BucketIter);
+		Bucket = (IndexPtr) SLGetItem(BucketIter);
+		while(Bucket != NULL){
+					Bucket = (IndexPtr) SLGetItem(BucketIter);
+					fprintf(output,"\t\t{ \"%s\" : %d }\n",Bucket->file,Bucket->freq);
+					Bucket = SLNextItem(BucketIter);
 		}
 		fprintf(output,"\t ]} \n");
-
-		SLNextItem(iter);
+		item = (Indexee)SLNextItem(iter);
 	}
-	fprintf(output,"]}");
-	fclose(output);
-	return;
+		fprintf(output,"]}");
+		fclose(output);
+		return;
 }
+
+
+
+
+
 
 
 
