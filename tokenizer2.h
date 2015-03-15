@@ -26,7 +26,7 @@ typedef struct input* Reader;
  *Input: A Path name
  *Output: None but creates Struct Input
  */
-Reader CreateReader(const char*);
+Reader CreateReader(FILE*);
 /*
  * Destroys struct Input
  * Input: takes in Reader
