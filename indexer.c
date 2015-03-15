@@ -181,7 +181,7 @@ void writetofile(RadixPtr Root,char* file){
 
 
 void InsertStringtoTree(RadixPtr Root,char* token,const char* path){
-		InserttoTree(Root,Root->Child,token,path);
+		Find(Root,Root->Child,token,path);
 
 }
 

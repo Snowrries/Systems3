@@ -64,7 +64,7 @@ SortedListPtr *InsertToken(RadixPtr Head,char* token){
 		//If there is a duplicate no need to insert Node
 		else if(cmpresult == 0){
 
-			return &(Head->Index);
+			return &(Child->Index);
 		}
 		Prev = Child;
 		Child = (Child)->Next;
@@ -168,7 +168,7 @@ void NodeCutter(RadixPtr Node, int length){
 }
 
 
-void InserttoTree(RadixPtr Head,RadixPtr C,char* token,const char* path){
+void Find(RadixPtr Head,RadixPtr C,char* token,const char* path){
 
 	int toklen =(int) strlen(token);
 	SortedListPtr *Result;
@@ -193,16 +193,15 @@ void InserttoTree(RadixPtr Head,RadixPtr C,char* token,const char* path){
 //	printf("Headstr: %s, token: %s \n",Head->string, token);
 	if(prelen == 0){
 
-		InserttoTree(Head,C->Next,token,path);
+		Find(Head,C->Next,token,path);
 		return;
 	}
 
 	else if(prelen < toklen){
 
-		char* newtok = malloc(sizeof(char) * (toklen - prelen));
+		char* newtok = malloc(sizeof(char) * (toklen - prelen+1));
 		strncpy(newtok,token+prelen, toklen - prelen );
-		token = newtok;
-		free(newtok);
+		newtok[strlen(newtok)] = '\0';
 		if(prelen < C->len){
 			NodeCutter(C,prelen);
 			printf("Cstring: %s\n",C->string);
@@ -211,7 +210,7 @@ void InserttoTree(RadixPtr Head,RadixPtr C,char* token,const char* path){
 	//	Head = C;
 	//	C = C->Child;
 
-		InserttoTree(C,C->Child,token,path);
+		Find(C,C->Child,newtok,path);
 		return;
 
 	}

@@ -121,7 +121,7 @@ void NodeCutter(RadixPtr,int);
  *Input: Parent Node, Child Node, token desired to be inputted
  *Output: SortedListPtr Index of File/Freq
  */
-void InserttoTree(RadixPtr,RadixPtr,char*,const char*);
+void Find(RadixPtr,RadixPtr,char*,const char*);
 
 
 #endif /* RADIXTREE_H_ */

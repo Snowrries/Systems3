@@ -94,14 +94,16 @@ int SLInsert(SortedListPtr list, void *newObj){
 	else {
 
 		Comparator = SLGetItem(Iter);
-
-		while(list->Compare(Comparator, newObj) < 0 && Comparator != NULL){ //If the compare function returns >0 means if newObj is less than or equal to compared object (List is ordered from largest to smallest
+		int a = list->Compare(Comparator, newObj);
+		printf("Compare: %d",a);
+		while(a < 0 && Comparator != NULL){ //If the compare function returns >0 means if newObj is less than or equal to compared object (List is ordered from largest to smallest
 			prevNode = Iter->Node;
 			Comparator = SLNextItem(Iter);
+			a = list->Compare(Comparator, newObj);
 
 		}
 
-		if (list->Compare(Comparator, newObj) == 0){ //Throw out if duplicate is found
+		if (a == 0){ //Throw out if duplicate is found
 
 			SLDestroyIterator(Iter);
 			return 0;
