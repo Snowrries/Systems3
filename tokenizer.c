@@ -38,6 +38,7 @@ TokenizerT *TKCreate(const char * filename ) {
 }
 void TKDestroy( TokenizerT * tk ) {
 	free(tk->untokened);
+	free(tk->wholefile);
 	fclose(tk->boo);
 	regfree(&(tk->rx));
 	//regfree(&(tk->keywordrx));

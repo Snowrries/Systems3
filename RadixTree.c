@@ -32,6 +32,7 @@ RadixPtr MakeLikeATree(){
 
 
 SortedListPtr *InsertToken(RadixPtr Head,char* token){
+        printf("Inserttoken: %s\n", token);
 	RadixPtr Obj = RadNodeCreate(token,strlen(token));
 	Obj->Parent = Head;
 
@@ -147,10 +148,12 @@ void NodeCutter(RadixPtr Node, int length){
 	char* suffix;
 	char* prefix;
 	suffix = malloc(sizeof(char) * sufflen);
-	prefix = malloc(sizeof(char) * length);
-
+	prefix = malloc(sizeof(char) * length+1);
 	strncpy(suffix,Node->string + length,sufflen);
 	strncpy(prefix,Node->string,length);
+	prefix[length] = '\0';
+	printf("early prefix: %s\n", prefix);
+	printf("Node->string %s\n", Node->string);
 	Node->string = prefix;
 	RadixPtr SuffixNode = RadNodeCreate(suffix,strlen(suffix));
 	SuffixNode->Child = Node->Child;
@@ -159,12 +162,17 @@ void NodeCutter(RadixPtr Node, int length){
 	Node->Child = SuffixNode;
 	Node->Index = NULL;
 	Node->len = strlen(prefix);
+//	printf("suffnode: %s\n", SuffixNode->string);
+	printf("prelen: %d, nodelen: %d\n", length, Node->len);
+        printf("suffix: %s\nprefix: %s\n",suffix,prefix);
+
 	free(suffix);
 	free(prefix);
 }
 
 
 void InserttoTree(RadixPtr Head,RadixPtr C,char* token,const char* path){
+
 	int toklen =(int) strlen(token);
 	SortedListPtr *Result;
 	cmptype compare = &CompareBucket;
@@ -185,7 +193,7 @@ void InserttoTree(RadixPtr Head,RadixPtr C,char* token,const char* path){
 	}
 
 	int prelen = PrefixFinder(C->string,token,C->len,toklen);
-
+//	printf("Headstr: %s, token: %s \n",Head->string, token);
 	if(prelen == 0){
 
 		InserttoTree(Head,C->Next,token,path);
@@ -202,20 +210,20 @@ void InserttoTree(RadixPtr Head,RadixPtr C,char* token,const char* path){
 			NodeCutter(C,prelen);
 
 		}
-		Head = C;
-		C = C->Child;
+	//	Head = C;
+	//	C = C->Child;
 
-		InserttoTree(Head,C,token,path);
-		 return;
+		InserttoTree(C,C->Child,token,path);
+		return;
 
 	}
 	Result = InsertToken(Head,token);
-	 if(*Result == NULL){
+	if(*Result == NULL){
 		(*Result) = (SLCreate(compare,delete));
 	}
-	 newIndex = IndexNodeCreate(path);
-	 SLInsert(*Result, newIndex );
-	  return;
+	newIndex = IndexNodeCreate(path);
+	SLInsert(*Result, newIndex );
+	return;
 
 }
 
@@ -234,22 +242,31 @@ void PreorderTraverse(RadixPtr Head,char* token,SortedListPtr Output,StructFille
 
 		return;
 	}
+	char* tmp = strcpy();
+	token = realloc(sizeof(char) * (1 + strlen(Head->string) + strlen(token)));
 	strcat(token,Head->string);
 
+//	int sconeness = sizeof(char)*(strlen(token)+strlen(Head->string)+1);
+//	char *scone = malloc(sconeness);
+//	strcpy(scone, Head->string);
+//	strcat(scone,token);
 	if(Head->Index !=NULL){
 
 		SLInsert(Output,sF(token,Head->Index));
-
 		}
 
 	PreorderTraverse(Head->Child,token,Output,sF);
+	
 	char* newtok = malloc(sizeof(char) *(1+ (strlen(token) - Head->len)));
 	newtok[0] = '\0';
-	strncpy(newtok,token,strlen(token) - Head->len );
+	
+	strncpy(newtok,token,strlen(scone) - Head->len );
 	token = newtok;
-	token[strlen(token)-1]='\0';
+	printf("head: %s, token: %s, newtok: %s\n", Head->string, token, newtok);
+//	token[strlen(token)-1]='\0';
 	PreorderTraverse(Head->Next,token,Output,sF);
 	free(newtok);
+//	free(scone);
 
 
 

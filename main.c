@@ -26,7 +26,7 @@ int main(int argc, char** argv){
 	if(access(argv[1], F_OK) != -1){
 		printf("The file already exists.  Would you like to overwrite? (Yes or No)\n");
 		scanf("%s", userinput);
-	while(!(strcmp(userinput,"Yes") || strcmp(userinput,"No"))){
+	while((strcmp(userinput,"Yes") &&  strcmp(userinput,"No"))){
 		printf("Sorry, didn't quite catch that. Please enter Yes or No.\n");
 		scanf("%s", userinput);
 	}
