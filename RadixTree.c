@@ -242,8 +242,8 @@ void PreorderTraverse(RadixPtr Head,char* token,SortedListPtr Output,StructFille
 
 		return;
 	}
-	char* tmp = strcpy();
-	token = realloc(sizeof(char) * (1 + strlen(Head->string) + strlen(token)));
+	//char* tmp = strcpy();
+	token = realloc(token, sizeof(char) * (1 + strlen(Head->string) + strlen(token)));
 	strcat(token,Head->string);
 
 //	int sconeness = sizeof(char)*(strlen(token)+strlen(Head->string)+1);
@@ -260,7 +260,7 @@ void PreorderTraverse(RadixPtr Head,char* token,SortedListPtr Output,StructFille
 	char* newtok = malloc(sizeof(char) *(1+ (strlen(token) - Head->len)));
 	newtok[0] = '\0';
 	
-	strncpy(newtok,token,strlen(scone) - Head->len );
+	strncpy(newtok,token,strlen(token) - Head->len );
 	token = newtok;
 	printf("head: %s, token: %s, newtok: %s\n", Head->string, token, newtok);
 //	token[strlen(token)-1]='\0';
