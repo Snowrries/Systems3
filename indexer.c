@@ -86,13 +86,14 @@ void dirTrav(const char* path,RadixPtr root, int n){
 		stuff = TKCreate(path);
 		while(TKhasNext(stuff)){
 	                token = TKGetNextToken(stuff);
-			printf("%s", token);
+			printf("indexer: %s\n", token);
 	                if(token!=NULL){
 //				printf("%s",token);
 				InsertStringtoTree(root,token,path);
-				
 	                }
+		//printf("End of iter\n");
 		}
+		
 		TKDestroy(stuff);
 		return;	          
 	}
@@ -134,6 +135,7 @@ free(desu);
 }
 
 void writetofile(RadixPtr Root,char* file){
+	
 	FILE* output = fopen(file,"w");
 	SortedListPtr ACertainMagicalIndex;
 

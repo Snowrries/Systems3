@@ -64,8 +64,11 @@ char *TKGetNextToken( TokenizerT * tk ) {
 		while(done[i]){
 			done[i] = tolower(done[i]);
 			i++;
-		} 
-	//	printf("%s\n", done);
+		}
+	//	if(isalpha(done[0])== 0){
+	//		return 0;
+	//	} 
+//		printf("%s\n", done);
 //gief root and path TKGetNextToken(stuff,root,path);
 		return done;
 

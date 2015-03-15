@@ -248,8 +248,8 @@ void PreorderTraverse(RadixPtr Head,char* token,SortedListPtr Output,StructFille
 	strncpy(newtok,token,strlen(token) - Head->len );
 	token = newtok;
 	token[strlen(token)-1]='\0';
-	free(newtok);
 	PreorderTraverse(Head->Next,token,Output,sF);
+	free(newtok);
 
 
 
