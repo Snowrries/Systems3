@@ -1,0 +1,31 @@
+Anthony Wong
+Allen Tung
+Test Plan
+
+To test the robustness and usability of our code we first tested if it could walk through a directory.
+
+Walking Through a Directory
+-Created a directory called test with assorted files and subdirectories
+-Printed out path names to show that the program was indeed traversing through the directory
+
+
+Example Output:
+  test/.                 test/..                test/blah             test/blah/.             test/blah/..           test/blah/sadas.txt     test/boo.txt      test/interestingname.txt
+
+
+
+
+Secondly we had to test if the program could successfully tokenize and if our data structure was effective in storage and retrieval
+
+Tokenization and Insertion
+-To test tokenization the indexer was given a single ascii file as input with assorted tokens with a mix of alphanumeric and non-alphanumeric tokens.
+-We had the tokens inputted into the tree and then returned as printed output.
+-The tree was able successfully insert tokens from the tokenizer.
+
+
+
+Finally we tested if the program could write to an output  file in the desired format
+
+Tree Traversal and Writing to Output file
+-Instead of having the tokens print out as with the last test, we made the program write the tokens into a file
+-To check for correctness, we observed the output file to see if the correct amount of tokens were printed and if the tokens were in sorted order
