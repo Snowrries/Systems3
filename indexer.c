@@ -68,7 +68,7 @@ void dirTrav(const char* path,RadixPtr root, int n){
 
 
 //Directory traverse
-
+		printf("%s, \t %s\n",path+strlen(path)-2, path+strlen(path)-1);
 		  if (strcmp(path, "..") != 0 && strcmp(path+strlen(path)-2, "..") == 0) {
 		        return;
 		    }
@@ -125,7 +125,7 @@ void dirTrav(const char* path,RadixPtr root, int n){
 
 
 
-	        printf("\t %s \t",newPath);
+	        printf("\t %s \t\n",newPath);
 	        dirTrav(newPath, root, n);
 	        free(newPath);
 

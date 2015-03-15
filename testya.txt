@@ -5,22 +5,22 @@
 		 { "bbbbbbbbbwormholewormhole" : [ 
 		{ "waaah" : 4 }
 	 ]} 
-		 { "oooop" : [ 
+		 { "boooop" : [ 
 		{ "waaah" : 1 }
 	 ]} 
-		 { "p" : [ 
+		 { "boop" : [ 
 		{ "waaah" : 1 }
 	 ]} 
-		 { "ccccccccclongwordslongwords" : [ 
+		 { "bbbbbbbbbwormholewormholccccccccclongwordslongwords" : [ 
 		{ "waaah" : 4 }
 	 ]} 
-		 { "dddddddddarmedaardvark" : [ 
+		 { "bbbbbbbbbwormholewormholdddddddddarmedaardvark" : [ 
 		{ "waaah" : 4 }
 	 ]} 
-		 { "eeeeeeeeeblazingblombers" : [ 
+		 { "bbbbbbbbbwormholewormholeeeeeeeeeblazingblombers" : [ 
 		{ "waaah" : 4 }
 	 ]} 
-		 { "waaa" : [ 
+		 { "bbbbbbbbbwormholewormholwaaa" : [ 
 		{ "waaah" : 1 }
 	 ]} 
 ]}
