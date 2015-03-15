@@ -17,7 +17,8 @@ RadixPtr RadNodeCreate(char* str, int length){
 
 IndexPtr IndexNodeCreate(const char* path){
 	IndexPtr newNode = (IndexPtr) malloc(sizeof(struct Index));
-	newNode->file = path;
+	newNode->file = malloc(sizeof(char) * 64);	
+	strcpy(newNode->file, path);	
 	newNode->freq = 1;
 	return newNode;
 
@@ -183,7 +184,9 @@ void Find(RadixPtr Head,RadixPtr C,char* token,const char* path){
 
 			(*Result) = (SLCreate(compare,delete));
 
-		 }
+		 
+		}
+		
 		 newIndex = IndexNodeCreate(path);
 		 SLInsert(*Result, newIndex );
 		 return;
@@ -228,10 +231,9 @@ void Find(RadixPtr Head,RadixPtr C,char* token,const char* path){
 
 
 void PreorderTraverse(RadixPtr Head,char* token,SortedListPtr Output,StructFiller sF){
-
+	
 	char* fullstr;
 	if(Head == NULL){
-
 		return;
 	}
 
@@ -239,35 +241,26 @@ void PreorderTraverse(RadixPtr Head,char* token,SortedListPtr Output,StructFille
 
 		return;
 	}
-
-        printf("1. head: %s,\t\t\t token: %s\n", Head->string, token);
-
-	fullstr = malloc(sizeof(char) * (1 + strlen(Head->string) + strlen(token)));
-	*fullstr = '\0';
+		
+	fullstr = malloc(sizeof(char) * (1 + strlen(Head->string)+strlen(token)));
+	fullstr[0] = '\0';
 	strcat(fullstr,token);
 	strcat(fullstr,Head->string);
-	fullstr[(strlen(Head->string)+strlen(token))] = '\0';
-//	printf("fullstr: %s\n", fullstr);
-	
-        printf("1. head: %s,\t\t\t fullstr: %s\n", Head->string, fullstr);
-
+	fullstr[(strlen(Head->string)) + strlen(token)] = '\0';
 	if(Head->Index !=NULL){
 
 		SLInsert(Output,sF(fullstr,Head->Index));
 	}
 	if(Head->Child != NULL){
+		
 		PreorderTraverse(Head->Child,fullstr,Output,sF);
+		
 	}
-
-//	char* newtok = malloc(sizeof(char) *(1+ (strlen(token) - Head->len)));
-//	newtok[0] = '\0';
 	
-//	strncpy(newtok,token,strlen(token) - Head->len );
-//	newtok[(strlen(token))-(Head->len)] = '\0';
-//	printf("2. head: %s,\t\t\t newtok: %s\n", Head->string, newtok);
-	if(Head->Next != NULL){
+	if(Head->Next !=NULL){
+		printf("%s has a next \n",Head->string);
 		PreorderTraverse(Head->Next,token,Output,sF);
 	}
-	//newtok[0] = '\0';
+	return;	
 
 }
