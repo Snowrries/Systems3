@@ -5,64 +5,64 @@
 		 { "an" : [ 
 		{ "" : 1 }
 	 ]} 
-		 { "actuabut" : [ 
+		 { "but" : [ 
 		{ "" : 1 }
 	 ]} 
-		 { "actuadoes" : [ 
-		{ "ри" : 1 }
+		 { "does" : [ 
+		{ "рЄ" : 1 }
 	 ]} 
-		 { "actuadoooessssssssssitfollowwwwwwwwwwwwwwwWW" : [ 
-		{ "ри" : 1 }
+		 { "doooessssssssssitfollowwwwwwwwwwwwwwwWW" : [ 
+		{ "рЄ" : 1 }
 	 ]} 
-		 { "actuadoextensions" : [ 
-		{ "ри" : 1 }
+		 { "extensions" : [ 
+		{ "рЄ" : 1 }
 	 ]} 
-		 { "actuadofile" : [ 
+		 { "file" : [ 
 		{ "" : 1 }
 	 ]} 
-		 { "actuadofiles" : [ 
-		{ "ри" : 1 }
+		 { "files" : [ 
+		{ "рЄ" : 1 }
 	 ]} 
-		 { "actuadofollow" : [ 
-		{ "ри" : 1 }
+		 { "follow" : [ 
+		{ "рЄ" : 1 }
 	 ]} 
-		 { "actuadofilhere" : [ 
+		 { "here" : [ 
 		{ "" : 1 }
 	 ]} 
-		 { "actuadofilin" : [ 
+		 { "in" : [ 
 		{ "" : 1 }
 	 ]} 
-		 { "actuadofilit" : [ 
-		{ "ри" : 1 }
+		 { "it" : [ 
+		{ "рЄ" : 1 }
 	 ]} 
-		 { "actuadofililet" : [ 
+		 { "let" : [ 
 		{ "" : 1 }
 	 ]} 
-		 { "actuadofiliput" : [ 
+		 { "put" : [ 
 		{ "" : 1 }
 	 ]} 
-		 { "actuadofilisome" : [ 
+		 { "s" : [ 
 		{ "" : 1 }
 	 ]} 
-		 { "actuadofilisome" : [ 
+		 { "some" : [ 
 		{ "" : 1 }
 	 ]} 
-		 { "actuadofilisymbols" : [ 
+		 { "symbols" : [ 
 		{ "" : 1 }
 	 ]} 
-		 { "actuadofilisomtext" : [ 
+		 { "text" : [ 
 		{ "" : 1 }
 	 ]} 
-		 { "actuadofilisomuh" : [ 
+		 { "uh" : [ 
 		{ "" : 1 }
 	 ]} 
-		 { "actuadofilisomweird" : [ 
-		{ "ри" : 1 }
+		 { "weird" : [ 
+		{ "рЄ" : 1 }
 	 ]} 
-		 { "actuadofilisomwith" : [ 
-		{ "ри" : 1 }
+		 { "with" : [ 
+		{ "рЄ" : 1 }
 	 ]} 
-		 { "actuadofilisomwoo" : [ 
+		 { "woo" : [ 
 		{ "" : 1 }
 	 ]} 
 ]}

@@ -229,7 +229,7 @@ void Find(RadixPtr Head,RadixPtr C,char* token,const char* path){
 
 void PreorderTraverse(RadixPtr Head,char* token,SortedListPtr Output,StructFiller sF){
 
-
+	char* fullstr;
 	if(Head == NULL){
 
 		return;
@@ -239,24 +239,35 @@ void PreorderTraverse(RadixPtr Head,char* token,SortedListPtr Output,StructFille
 
 		return;
 	}
-	printf("token: %s\n", token);
-	token = realloc(token, sizeof(char) * (1 + strlen(Head->string) + strlen(token)));
-	strcat(token,Head->string);
+
+        printf("1. head: %s,\t\t\t token: %s\n", Head->string, token);
+
+	fullstr = malloc(sizeof(char) * (1 + strlen(Head->string) + strlen(token)));
+	*fullstr = '\0';
+	strcat(fullstr,token);
+	strcat(fullstr,Head->string);
+	fullstr[(strlen(Head->string)+strlen(token))] = '\0';
+//	printf("fullstr: %s\n", fullstr);
+	
+        printf("1. head: %s,\t\t\t fullstr: %s\n", Head->string, fullstr);
+
 	if(Head->Index !=NULL){
 
-		SLInsert(Output,sF(token,Head->Index));
+		SLInsert(Output,sF(fullstr,Head->Index));
 	}
 	if(Head->Child != NULL){
-		PreorderTraverse(Head->Child,token,Output,sF);
+		PreorderTraverse(Head->Child,fullstr,Output,sF);
 	}
 
-	char* newtok = malloc(sizeof(char) *(1+ (strlen(token) - Head->len)));
-	newtok[0] = '\0';
+//	char* newtok = malloc(sizeof(char) *(1+ (strlen(token) - Head->len)));
+//	newtok[0] = '\0';
 	
-	strncpy(newtok,token,strlen(token) - Head->len );
-	newtok[strlen(token)-Head->len] = '\0';
-	printf("head: %s,\t\t\t newtok: %s\n", Head->string, newtok);
+//	strncpy(newtok,token,strlen(token) - Head->len );
+//	newtok[(strlen(token))-(Head->len)] = '\0';
+//	printf("2. head: %s,\t\t\t newtok: %s\n", Head->string, newtok);
 	if(Head->Next != NULL){
-		PreorderTraverse(Head->Next,newtok,Output,sF);
+		PreorderTraverse(Head->Next,token,Output,sF);
 	}
+	//newtok[0] = '\0';
+
 }
