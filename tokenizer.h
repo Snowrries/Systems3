@@ -26,9 +26,27 @@ Input: a file name, fds.
 Output: nothing.
 
 */
-void matching(const char *fds);
+
+struct TokenizerT_ {
+	char* untokened;
+	regoff_t charsfromleft;
+	int numtoken;
+	regmatch_t matches;
+	regmatch_t matlol;
+	regex_t rx;
+	regex_t keywordrx;
+	int hasNext;
+	int wasModified;
+};
+
+typedef struct TokenizerT_ TokenizerT;
 
 
+TokenizerT *TKCreate( char * ts );
+
+void TKDestroy( TokenizerT * tk );
+
+char *TKGetNextToken( TokenizerT * tk );
 
 
 
