@@ -12,10 +12,12 @@
 int main(int argc, char** argv){
 	RadixPtr ygg;
 	int n;
+	char *filnam;
 	if(argc !=4){
 		printf("Invalid Numbers of Arguments\n");
 		return 0;
 	}
+	filnam = argv[1];
 	n = atoi(argv[3]);
 
 	if(n != 0 && n != 1){
@@ -49,7 +51,7 @@ int main(int argc, char** argv){
 
 	ygg = MakeLikeATree();
 	dirTrav(argv[2], ygg, n);
-	writetofile(ygg,argv[1]);
+	writetofile(ygg,filnam);
 	TreeDestruct(ygg);
 	
 	return 0;
