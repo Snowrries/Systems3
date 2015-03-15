@@ -13,11 +13,13 @@ TokenizerT *TKCreate(const char * filename ) {
 	tk->wholefile = malloc(sizeof(char));
 	tk->wholefile[0] = '\0';
 	while((getl = getline(&desu, &bufflen, tk->boo)) > 0){
-		tk->wholefile = realloc(tk->wholefile, strlen(tk->wholefile)+strlen(desu) );
+		tk->wholefile = (char*)realloc(tk->wholefile, sizeof(char)*(strlen(tk->wholefile)+strlen(desu)) );
+		desu[( (int)strlen(desu))-1] = ' ';
 		strcat(tk->wholefile,desu);
+		printf("%s\n", tk->wholefile);
 	}
 	
-	printf("Okay%s", tk->wholefile);
+//	printf("Okay%s", tk->wholefile);
 	int regerrorcode = regcomp(&(tk->rx),REGEXPAT, REG_EXTENDED|REG_ICASE);
 	if (regerrorcode){
 		printf("well regcomp failed so here is the error code %d\n", regerrorcode);
@@ -40,7 +42,7 @@ void TKDestroy( TokenizerT * tk ) {
 	//regfree(&(tk->keywordrx));
 	free(tk);
 }
-char *TKGetNextToken( TokenizerT * tk ) {
+char *TKGetNextToken( TokenizerT * tk, RadixPtr root, const char* path ) {
 		if(tk->hasNext){
 			return 0;
 		} 
@@ -52,8 +54,13 @@ char *TKGetNextToken( TokenizerT * tk ) {
 		tk->hasNext = regexec(&tk->rx,tk->untokened+tk->matches.rm_eo+tk->charsfromleft, 1, &tk->matches, REG_NOTBOL);
 		tk->charsfromleft+=tempCharsholder;
 		char *done = (char *)malloc((strlen(tokenz)+1)*sizeof(char)+1);
+		printf("%s\n", done);
 		sprintf(done,"%s",  tokenz);
 		free(tokenz);
+		if(isalpha(done[0])!=0){
+//gief root and path TKGetNextToken(stuff,root,path);
+			InserttoTree(root, root->Child, done, path );
+		}
 		return done;
 
 

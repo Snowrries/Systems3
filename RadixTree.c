@@ -112,7 +112,7 @@ void TreeDestruct(RadixPtr root){
 	}
 	while(root->Child != NULL){
 		TreeDestruct(root->Child);
-
+		root->Child = NULL;
 	}
 	while(root->Next!=NULL){
 		TreeDestruct(root->Next);

@@ -84,21 +84,24 @@ void dirTrav(const char* path,RadixPtr root, int n){
 	if(S_ISREG(buf->st_mode) ){
 
 		stuff = TKCreate(path);
-					while(TKhasNext(stuff)){
-		                token = TKGetNextToken(stuff);
-		                if(token!=NULL){
-							InsertStringtoTree(root,token,path);
-							free(token);
-		                }
-					}
-
-				TKDestroy(stuff);
-	          }
-
-
-
+		while(TKhasNext(stuff)){
+	                token = TKGetNextToken(stuff,root,path);
+	  //              if(token!=NULL){
+	//			printf("%s",token);
+		//		InsertStringtoTree(root,token,path);
+			//	
+	               // }
+		}
+		TKDestroy(stuff);
+		return;	          
+	}
 
 
+
+
+	if(path == NULL){
+		return;
+	}
 	directory = opendir(path);
 	struct dirent *nextDir = NULL;
 	free(buf);

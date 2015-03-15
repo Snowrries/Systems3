@@ -1,6 +1,6 @@
 CC=gcc
 CCFLAGS= -Wall -g -Werror 
-OBJECTS = Node.o sorted-list.o RadixTree.o indexer.o isascii.o tokenizer2.o
+OBJECTS = Node.o sorted-list.o RadixTree.o indexer.o isascii.o tokenizer.o
 
 all:  $(OBJECTS) main.o
 	ar -rcs libygg.a $(OBJECTS)
@@ -21,8 +21,8 @@ RadixTree.o: RadixTree.c RadixTree.h
 isascii.o: isascii.c isascii.h
 	$(CC) $(CCFLAGS) -c isascii.c
 
-tokenizer2.o: tokenizer2.c tokenizer2.h
-	$(CC) $(CCFLAGS) -c tokenizer2.c
+tokenizer.o: tokenizer.c tokenizer.h
+	$(CC) $(CCFLAGS) -c tokenizer.c
 
 indexer.o: indexer.c indexer.h
 	$(CC) $(CCFLAGS) -c indexer.c
