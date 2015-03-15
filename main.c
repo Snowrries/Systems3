@@ -13,7 +13,7 @@ int main(int argc, char** argv){
 	RadixPtr ygg;
 	int n;
 	if(argc !=4){
-		printf("Invalid Numbers of Arguments");
+		printf("Invalid Numbers of Arguments\n");
 		return 0;
 	}
 	n = atoi(argv[3]);

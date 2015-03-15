@@ -163,8 +163,8 @@ void NodeCutter(RadixPtr Node, int length){
 	printf("prelen: %d, nodelen: %d\n", length, Node->len);
         printf("suffix: %s\nprefix: %s\n",suffix,prefix);
 
-	free(suffix);
-	free(prefix);
+//	free(suffix);
+//	free(prefix);
 }
 
 
@@ -205,6 +205,7 @@ void InserttoTree(RadixPtr Head,RadixPtr C,char* token,const char* path){
 		free(newtok);
 		if(prelen < C->len){
 			NodeCutter(C,prelen);
+			printf("Cstring: %s\n",C->string);
 
 		}
 	//	Head = C;
@@ -250,19 +251,22 @@ void PreorderTraverse(RadixPtr Head,char* token,SortedListPtr Output,StructFille
 	if(Head->Index !=NULL){
 
 		SLInsert(Output,sF(token,Head->Index));
-		}
+	}
+	if(Head->Child != NULL){
+		PreorderTraverse(Head->Child,token,Output,sF);
+	}
 
-	PreorderTraverse(Head->Child,token,Output,sF);
-	
 	char* newtok = malloc(sizeof(char) *(1+ (strlen(token) - Head->len)));
 	newtok[0] = '\0';
 	
 	strncpy(newtok,token,strlen(token) - Head->len );
 	token = newtok;
-	printf("head: %s, token: %s, newtok: %s\n", Head->string, token, newtok);
-//	token[strlen(token)-1]='\0';
-	PreorderTraverse(Head->Next,token,Output,sF);
-	free(newtok);
+	printf("head: %s,\t\t\t token: %s, \t\t\tnewtok: %s\n", Head->string, token, newtok);
+	if(Head->Next != NULL){
+		token[0]='\0';
+		PreorderTraverse(Head->Next,token,Output,sF);
+	}
+//	free(newtok);
 //	free(scone);
 
 
