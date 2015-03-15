@@ -23,7 +23,7 @@ struct RadixNode{
 };
 
 struct Index{
-	const char* file;
+	char* file;	
 	int freq;
 
 };
