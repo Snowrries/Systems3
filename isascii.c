@@ -2,24 +2,24 @@
 
 char text_chars[256] = {
 	/*                  BEL BS HT LF    FF CR    */
-	F, F, F, F, F, F, F, T, T, T, T, F, T, T, F, F,  /* 0x0X */
+	Fii, Fii, Fii, Fii, Fii, Fii, Fii, Tii, Tii, Tii, Tii, Fii, Tii, Tii, Fii, Fii,  /* 0x0X */
 	/*                              ESC          */
-	F, F, F, F, F, F, F, F, F, F, F, T, F, F, F, F,  /* 0x1X */
-	T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T,  /* 0x2X */
-	T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T,  /* 0x3X */
-	T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T,  /* 0x4X */
-	T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T,  /* 0x5X */
-	T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T,  /* 0x6X */
-	T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, F,  /* 0x7X */
+	Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Tii, Fii, Fii, Fii, Fii,  /* 0x1X */
+	Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x2X */
+	Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x3X */
+	Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x4X */
+	Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x5X */
+	Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x6X */
+	Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Fii,  /* 0x7X */
 	/*            NEL                            */
-	X, X, X, X, X, T, X, X, X, X, X, X, X, X, X, X,  /* 0x8X */
-	X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X,  /* 0x9X */
-	I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I,  /* 0xaX */
-	I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I,  /* 0xbX */
-	I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I,  /* 0xcX */
-	I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I,  /* 0xdX */
-	I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I,  /* 0xeX */
-	I, I, I, I, I, I, I, I, I, I, I, I, I, I, I, I   /* 0xfX */
+	Xii, Xii, Xii, Xii, Xii, Tii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii,  /* 0x8X */
+	Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii,  /* 0x9X */
+	Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xaX */
+	Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xbX */
+	Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xcX */
+	Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xdX */
+	Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xeX */
+	Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii   /* 0xfX */
 };
 
 int
@@ -29,7 +29,7 @@ looks_ascii(const unsigned char *buf, size_t nbytes)
 		// buf[i] == (buf+i);
 		// buf[i] == 0	
 		int t = text_chars[buf[i]];
-		if (t != T) {
+		if (t != Tii) {
 			return 0;
 		}
 	}
@@ -38,11 +38,11 @@ looks_ascii(const unsigned char *buf, size_t nbytes)
 }
 /*returns 1 if the file is ascii, 0 if not, errno if error.*/
 int
-fakemain(char **argv)
+fakemain(const char *arv)
 {
-	FILE *fp = 0;
+	FILE *fp;
 
-	if ((fp = fopen(argv[1], "rb"))) {
+	if ((fp = fopen(arv, "r"))) {
 		unsigned char buffer[FR_BUFSIZ] = { 0 };
 		size_t nbytes = 0;
 		int ascii = 1;
@@ -76,3 +76,4 @@ fakemain(char **argv)
 	}
 
 }
+

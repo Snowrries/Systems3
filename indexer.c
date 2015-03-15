@@ -80,22 +80,23 @@ void dirTrav(const char* path,RadixPtr root, int n){
 
 	struct stat *buf = (struct stat*) malloc(sizeof(struct stat));
 	stat(path,buf);
-
+	
 	if(S_ISREG(buf->st_mode) ){
-
 		stuff = TKCreate(path);
-		while(TKhasNext(stuff)){
-	                token = TKGetNextToken(stuff);
-			printf("indexer: %s\n", token);
-	                if(token!=NULL){
-//				printf("%s",token);
-				InsertStringtoTree(root,token,path);
-	                }
-		//printf("End of iter\n");
+
+		if(looksascii(stuff)){
+			while(TKhasNext(stuff)){
+	        	        token = TKGetNextToken(stuff);
+				printf("indexer: %s\n", token);
+	        	        if(token!=NULL){
+//					printf("%s",token);
+					InsertStringtoTree(root,token,path);
+	        	        }
+			}
 		}
-		
 		TKDestroy(stuff);
-		return;	          
+	return;	          
+		
 	}
 
 

@@ -1,4 +1,17 @@
 #include "tokenizer.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <errno.h>  /* for errno */
+#include <string.h> /* for strerror */
+/* Borrowed from ascmagic.c in the file source tree */
+
+#define Fii 0   /* character never appears in text */
+#define Tii 1   /* character appears in plain ASCII text */
+#define Iii 2   /* character appears in ISO-8859 text */
+#define Xii 3   /* character appears in non-ISO extended ASCII (Mac, IBM PC) */
+
+#define FR_BUFSIZ 4096
+
 
 
 TokenizerT *TKCreate(const char * filename ) {
@@ -16,13 +29,13 @@ TokenizerT *TKCreate(const char * filename ) {
 		tk->wholefile = (char*)realloc(tk->wholefile, sizeof(char)*(strlen(tk->wholefile)+strlen(desu)) );
 		desu[( (int)strlen(desu))-1] = ' ';
 		strcat(tk->wholefile,desu);
-	//	printf("%s\n", tk->wholefile);
+
 	}
 	
 	printf("%s\n", tk->wholefile);
 	int regerrorcode = regcomp(&(tk->rx),REGEXPAT, REG_EXTENDED|REG_ICASE);
 	if (regerrorcode){
-		printf("well regcomp failed so here is the error code %d\n", regerrorcode);
+		printf("Regex failed with error code: %d\n", regerrorcode);
 		return NULL;
 	}	
 	tk->untokened = (char *)malloc((strlen(tk->wholefile)+1) * sizeof(char *));
@@ -36,12 +49,49 @@ TokenizerT *TKCreate(const char * filename ) {
 
 
 }
+
+char text_chars[256] = {
+        /*                  BEL BS HT LF    FF CR    */
+        Fii, Fii, Fii, Fii, Fii, Fii, Fii, Tii, Tii, Tii, Tii, Fii, Tii, Tii, Fii, Fii,  /* 0x0X */
+        /*                              ESC          */
+        Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Tii, Fii, Fii, Fii, Fii,  /* 0x1X */
+        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x2X */
+        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x3X */
+        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x4X */
+        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x5X */
+        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x6X */
+        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Fii,  /* 0x7X */
+        /*            NEL                            */
+        Xii, Xii, Xii, Xii, Xii, Tii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii,  /* 0x8X */
+        Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii,  /* 0x9X */
+        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xaX */
+        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xbX */
+        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xcX */
+        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xdX */
+        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xeX */
+        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii   /* 0xfX */
+};
+int
+looksascii(TokenizerT * mememe)
+{       int i;
+        for (i = 0; i < strlen(mememe->wholefile); i++ ) {
+                int t = text_chars[(int)(mememe->wholefile[i])];
+                if (t != Tii) {
+                        return 0;
+                }
+        }
+        return 1;
+}
+/*returns 1 if the file is ascii, 0 if not, errno if error.*/
+
+
+
+
 void TKDestroy( TokenizerT * tk ) {
 	free(tk->untokened);
 	free(tk->wholefile);
 	fclose(tk->boo);
 	regfree(&(tk->rx));
-	//regfree(&(tk->keywordrx));
 	free(tk);
 }
 char *TKGetNextToken( TokenizerT * tk ) {
@@ -53,24 +103,17 @@ char *TKGetNextToken( TokenizerT * tk ) {
 		char *tokenz = (char *)malloc((numchars+1) * sizeof(char));
 		strncpy(tokenz, tk->untokened+tk->matches.rm_so+tk->charsfromleft, numchars);
 		tokenz[numchars]='\0';
-//		printf("%s",tokenz);
 		regoff_t tempCharsholder = tk->matches.rm_eo;
 		tk->hasNext = regexec(&tk->rx,tk->untokened+tk->matches.rm_eo+tk->charsfromleft, 1, &tk->matches, REG_NOTBOL);
 		tk->charsfromleft+=tempCharsholder;
 		char *done = (char *)malloc((strlen(tokenz)+1)*sizeof(char)+1);
 		sprintf(done,"%s",  tokenz);
-	//	printf("%s\n", done);
 		free(tokenz);
 		i = 0;
 		while(done[i]){
 			done[i] = tolower(done[i]);
 			i++;
 		}
-	//	if(isalpha(done[0])== 0){
-	//		return 0;
-	//	} 
-//		printf("%s\n", done);
-//gief root and path TKGetNextToken(stuff,root,path);
 		return done;
 
 
