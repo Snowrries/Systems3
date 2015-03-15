@@ -129,6 +129,7 @@ void dirTrav(const char* path,RadixPtr root, int n){
 	        free(newPath);
 
 }
+free(desu);
 	closedir(directory);
 }
 
@@ -165,6 +166,7 @@ void writetofile(RadixPtr Root,char* file){
 	}
 		fprintf(output,"]}");
 		fclose(output);
+		free(token);
 		return;
 }
 

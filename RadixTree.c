@@ -159,8 +159,8 @@ void NodeCutter(RadixPtr Node, int length){
 	Node->Child = SuffixNode;
 	Node->Index = NULL;
 	Node->len = strlen(prefix);
-
-
+	free(suffix);
+	free(prefix);
 }
 
 
@@ -197,7 +197,7 @@ void InserttoTree(RadixPtr Head,RadixPtr C,char* token,const char* path){
 		char* newtok = malloc(sizeof(char) * (toklen - prelen));
 		strncpy(newtok,token+prelen, toklen - prelen );
 		token = newtok;
-
+		free(newtok);
 		if(prelen < C->len){
 			NodeCutter(C,prelen);
 
