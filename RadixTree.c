@@ -52,18 +52,15 @@ SortedListPtr *InsertToken(RadixPtr Head,char* token){
 		cmpresult = CompareNodes(Child,Obj);
 
 		if(cmpresult>0){
-
+			Obj->Next = Child;
 			if(Prev == Head){
-				Obj->Next = Child;
 				(Prev)->Child = Obj;
-				return &(Obj->Index);
-
 			}
-				Obj->Next = Child;
+			else{	
 				(Prev)->Next = Obj;
-
-				return &(Obj->Index);
 			}
+			return &(Obj->Index);
+		}
 		//If there is a duplicate no need to insert Node
 		else if(cmpresult == 0){
 
