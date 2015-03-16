@@ -8,7 +8,6 @@
 #include <ctype.h>
 #include <errno.h>
 #include <unistd.h>
-#include "isascii.h"
 #include "tokenizer.h"
 #include "RadixTree.h"
 
