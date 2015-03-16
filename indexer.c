@@ -6,41 +6,36 @@
  */
 
 #include "indexer.h"
-char text_chars[256] = {
-        /*                  BEL BS HT LF    FF CR    */
-        Fii, Fii, Fii, Fii, Fii, Fii, Fii, Tii, Tii, Tii, Tii, Fii, Tii, Tii, Fii, Fii,  /* 0x0X */
-        /*                              ESC          */
-        Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Tii, Fii, Fii, Fii, Fii,  /* 0x1X */
-        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x2X */
-        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x3X */
-        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x4X */
-        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x5X */
-        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x6X */
-        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Fii,  /* 0x7X */
-        /*            NEL                            */
-        Xii, Xii, Xii, Xii, Xii, Tii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii,  /* 0x8X */
-        Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii,  /* 0x9X */
-        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xaX */
-        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xbX */
-        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xcX */
-        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xdX */
-        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xeX */
-        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii   /* 0xfX */
-};
-
-
-
+//char text_chars[256] = {
+        /*    			           BEL  BS   HT   LF        FF   CR                      */
+//        Fii, Fii, Fii, Fii, Fii, Fii, Fii, Tii, Tii, Tii, Tii, Fii, Tii, Tii, Fii, Fii,  /* 0x0X */
+        /*                                                     ESC         			 */
+//        Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Fii, Tii, Fii, Fii, Fii, Fii,  /* 0x1X */
+//        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x2X */
+//        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x3X */
+//        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x4X */
+//        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x5X */
+//        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii,  /* 0x6X */
+//        Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Tii, Fii,  /* 0x7X */
+        /*                       NEL                                                             */
+//        Xii, Xii, Xii, Xii, Xii, Tii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii,  /* 0x8X */
+//        Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii, Xii,  /* 0x9X */
+//        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xaX */
+//        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xbX */
+//        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xcX */
+//        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xdX */
+//        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii,  /* 0xeX */
+//        Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii, Iii   /* 0xfX */
+//};
+/*
 int looksascii(const char *meme)
 {
 	FILE* mememe;
 	char desu;
-	//size_t bufflen;
-	//int getl;
-	//int i;
-	mememe = fopen(meme, "r");
+	mememe = fopen(meme, "rb");
 	while(!feof(mememe)){
 		fread(&desu, sizeof(char), 1, mememe);
-		if((int)(text_chars[(int)(desu)])){
+		if((int)(text_chars[(int)(desu)])!=Tii){
 			fclose(mememe);
 			return 0;
 		}
@@ -48,6 +43,7 @@ int looksascii(const char *meme)
 	fclose(mememe);
 	return 1;
 }
+*/
 int CompareIndex(void* a, void* b) {
 	return -1;
 }
@@ -117,7 +113,7 @@ void dirTrav(const char* path, RadixPtr root, int n) {
 	stat(path, buf);
 
 	if (S_ISREG(buf->st_mode)) {
-		if (looksascii(path)) {
+		//if (looksascii(path)) {
 			stuff = TKCreate(path);
 			while (TKhasNext(stuff)) {
 				token = TKGetNextToken(stuff);
@@ -127,7 +123,7 @@ void dirTrav(const char* path, RadixPtr root, int n) {
 					InsertStringtoTree(root, token, path);
 				}
 			}
-		}
+//	}
 		TKDestroy(stuff);
 		return;
 

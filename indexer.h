@@ -15,8 +15,9 @@
 
 /*input: file
  * output: 1 if ascii, 0 if not
+ * **not working**
  */
-int looksascii(const char *meme);
+//int looksascii(const char *meme);
 
 /*
  * This struct is used to store data retrieved from the tree
