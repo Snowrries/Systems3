@@ -7,9 +7,26 @@
 
 #include "indexer.h"
 
-/*
- *
- */
+
+
+int looksascii(const char *meme)
+{
+	FILE* mememe;
+    char desu;
+    size_t bufflen;
+    int getl;
+	int i;
+	mememe = fopen(meme, "r");
+	while(!feof(mememe)){
+		fread(&desu, sizeof(char), 1, mememe);
+		if((int)(text_chars[(int)(desu)])){
+			fclose(mememe);
+			return 0;
+		}
+	}
+	fclose(mememe);
+	return 1;
+}
 int CompareIndex(void* a, void* b) {
 	return -1;
 }
@@ -79,9 +96,8 @@ void dirTrav(const char* path, RadixPtr root, int n) {
 	stat(path, buf);
 
 	if (S_ISREG(buf->st_mode)) {
-		stuff = TKCreate(path);
-
-		if (looksascii(stuff)) {
+		if (looksascii(path)) {
+			stuff = TKCreate(path);
 			while (TKhasNext(stuff)) {
 				token = TKGetNextToken(stuff);
 				printf("indexer: %s\n", token);
@@ -172,4 +188,71 @@ void InsertStringtoTree(RadixPtr Root, char* token, const char* path) {
 	Find(Root, Root->Child, token, path);
 
 }
+
+
+
+
+
+
+
+
+
+	struct stat *buf = (struct stat*) malloc(sizeof(struct stat));
+	stat(path,buf);
+	if(looksascii(path)){
+
+	if(S_ISREG(buf->st_mode) ){
+		stuff = TKCreate(path);
+
+//		if(looksascii(stuff)){
+			while(TKhasNext(stuff)){
+	        	        token = TKGetNextToken(stuff);
+				printf("indexer: %s\n", token);
+	        	        if(token!=NULL){
+//					printf("%s",token);
+					InsertStringtoTree(root,token,path);
+	        	        }
+			}
+		TKDestroy(stuff);
+	}
+	return;	          
+		
+	}
+
+
+
+
+	if(path == NULL){
+		return;
+	}
+	directory = opendir(path);
+	struct dirent *nextDir = NULL;
+	free(buf);
+
+	while((nextDir = readdir(directory)) !=NULL){
+
+		newPath = (char*)malloc((strlen(path) + strlen(nextDir->d_name)+2) *sizeof(char));
+		if(newPath == NULL){
+			return;
+		}
+
+	pathLen = strlen(path);
+	strncpy(newPath,path,pathLen);
+	newPath[pathLen] = '/';
+	pathLen++;
+	newPath[pathLen] = '\0';
+	nextlen = strlen(nextDir->d_name);
+	strncat(newPath,nextDir->d_name,nextlen);
+
+
+
+	        printf("\t %s \t\n",newPath);
+	        dirTrav(newPath, root, n);
+	        free(newPath);
+
+}
+free(desu);
+	closedir(directory);
+}
+
 
