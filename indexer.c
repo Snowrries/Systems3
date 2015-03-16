@@ -101,7 +101,7 @@ void dirTrav(const char* path, RadixPtr root, int n) {
 	struct stat *buf = (struct stat*) malloc(sizeof(struct stat));
 	stat(path, buf);
 
-	if (S_ISREG(buf->st_mode) && is_ascii(path) == 0) {
+	if (S_ISREG(buf->st_mode)) {
 
 		stuff = TKCreate(path);
 		while (TKhasNext(stuff)) {
@@ -116,7 +116,7 @@ void dirTrav(const char* path, RadixPtr root, int n) {
 		TKDestroy(stuff);
 		return;
 
-	}
+	} 
 
 	if (path == NULL) {
 		return;
@@ -180,9 +180,14 @@ void writetofile(RadixPtr Root, char* file) {
 					Bucket->freq);
 			Bucket = SLNextItem(BucketIter);
 		}
+		free(item->token);
+		SLDestroyIterator(BucketIter);
+		SLDestroy(item->Index);
 		fprintf(output, "\t ]} \n");
 		item = (Indexee) SLNextItem(iter);
 	}
+	SLDestroyIterator(iter);
+	SLDestroy(ACertainMagicalIndex);
 	fprintf(output, "]}");
 	fclose(output);
 	free(token);

@@ -95,7 +95,7 @@ int CompareBucket(void* K, void* I) {
 
 void SLBucketDestroy(void* Node) {
 	IndexPtr Del = (IndexPtr) Node;
-	Del->file = NULL;
+	free(Del->file);
 	free(Del);
 
 }
@@ -113,6 +113,7 @@ void TreeDestruct(RadixPtr root) {
 		TreeDestruct(root->Next);
 		root->Next = NULL;
 	}
+	
 	SLDestroy(root->Index);
 	free(root);
 	return;
@@ -151,6 +152,7 @@ void NodeCutter(RadixPtr Node, int length) {
 	Node->Child = SuffixNode;
 	Node->Index = NULL;
 	Node->len = strlen(prefix);
+	
 
 }
 
@@ -230,7 +232,6 @@ void PreorderTraverse(RadixPtr Head, char* token, SortedListPtr Output,
 
 		return;
 	}
-
 	fullstr = malloc(sizeof(char) * (1 + strlen(Head->string) + strlen(token)));
 	fullstr[0] = '\0';
 	strcat(fullstr, token);
@@ -249,7 +250,10 @@ void PreorderTraverse(RadixPtr Head, char* token, SortedListPtr Output,
 	if (Head->Next != NULL) {
 
 		PreorderTraverse(Head->Next, token, Output, sF);
+	
 	}
+
+	
 	return;
 
 }
