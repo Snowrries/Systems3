@@ -4,7 +4,7 @@
  */
 #include "indexer.h"
 #include <errno.h>
-#include "isascii.h"
+
 
 int main(int argc, char** argv) {
 	RadixPtr ygg;
