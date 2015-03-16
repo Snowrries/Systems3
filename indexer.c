@@ -1,7 +1,6 @@
 /*
  * indexer.c
  *
-
  */
 
 #include "indexer.h"
@@ -23,6 +22,34 @@ void* StructFill(void* toks, void* buk) {
 	newInd->token = tok;
 	return newInd;
 
+}
+int is_ascii(const char *moo){
+
+        FILE* cow;
+        int a;
+        if((cow = fopen(moo,"r") )){
+                while((a=fgetc(cow))!=EOF){
+                        if(!(isprint(a) || (iscntrl(a)))){
+                                rewind(cow);
+                                fclose(cow);
+                                return 0;
+
+                        }
+                }
+        rewind(cow);
+        fclose(cow);
+        return 1;
+        }else {
+        fprintf(stderr, "Failed to open file: %s\n", strerror(errno));
+        return errno;
+        }
+
+        if (cow != 0 && fclose(cow) && errno != 0) {
+                fprintf(stderr, "Failed to close file: %s\n", strerror(errno));
+                return errno;
+        }
+
+        return 0;
 }
 
 void dirTrav(const char* path, RadixPtr root, int n) {
@@ -74,21 +101,25 @@ void dirTrav(const char* path, RadixPtr root, int n) {
 	struct stat *buf = (struct stat*) malloc(sizeof(struct stat));
 	stat(path, buf);
 
-	if (S_ISREG(buf->st_mode)) {
+	if (S_ISREG(buf->st_mode) && is_ascii(path) == 0) {
 
-			stuff = TKCreate(path);
-			while (TKhasNext(stuff)) {
-				token = TKGetNextToken(stuff);
+		stuff = TKCreate(path);
+		while (TKhasNext(stuff)) {
+			token = TKGetNextToken(stuff);
 
+			if (token != NULL) {
 
-					InsertStringtoTree(root, token, path);
-				}
+				InsertStringtoTree(root, token, path);
 			}
+		}
 
 		TKDestroy(stuff);
 		return;
 
-
+	} else {
+		printf("File is Binary \n");
+		return;
+	}
 
 	if (path == NULL) {
 		return;
@@ -112,7 +143,6 @@ void dirTrav(const char* path, RadixPtr root, int n) {
 		newPath[pathLen] = '\0';
 		nextlen = strlen(nextDir->d_name);
 		strncat(newPath, nextDir->d_name, nextlen);
-
 
 		dirTrav(newPath, root, n);
 		free(newPath);

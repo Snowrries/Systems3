@@ -56,4 +56,11 @@ void writetofile(RadixPtr, char* file);
  */
 void dirTrav(const char *path, RadixPtr root, int n);
 
+/*
+ * Checks if a file is an ascii character
+ * Input: Path of file to check
+ * OUtput:Return 1 if ascii, 0 is otherwise
+ */
+int is_ascii(const char* filename);
+
 #endif

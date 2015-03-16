@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
 	dirTrav(argv[2], ygg, n);
 	writetofile(ygg, filnam);
 	TreeDestruct(ygg);
-
+	printf("File is written in %s\n", filnam);
 	return 0;
 
 }
