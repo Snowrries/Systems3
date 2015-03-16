@@ -28,7 +28,7 @@ RadixPtr MakeLikeATree() {
 }
 
 SortedListPtr *InsertToken(RadixPtr Head, char* token) {
-	printf("Inserttoken: %s\n", token);
+
 	RadixPtr Obj = RadNodeCreate(token, strlen(token));
 	Obj->Parent = Head;
 
@@ -143,8 +143,6 @@ void NodeCutter(RadixPtr Node, int length) {
 	strncpy(suffix, Node->string + length, sufflen);
 	strncpy(prefix, Node->string, length);
 	prefix[length] = '\0';
-	printf("early prefix: %s\n", prefix);
-	printf("Node->string %s\n", Node->string);
 	Node->string = prefix;
 	RadixPtr SuffixNode = RadNodeCreate(suffix, strlen(suffix));
 	SuffixNode->Child = Node->Child;
@@ -153,12 +151,7 @@ void NodeCutter(RadixPtr Node, int length) {
 	Node->Child = SuffixNode;
 	Node->Index = NULL;
 	Node->len = strlen(prefix);
-//	printf("suffnode: %s\n", SuffixNode->string);
-	printf("prelen: %d, nodelen: %d\n", length, Node->len);
-	printf("suffix: %s\nprefix: %s\n", suffix, prefix);
 
-//	free(suffix);
-//	free(prefix);
 }
 
 void Find(RadixPtr Head, RadixPtr C, char* token, const char* path) {
@@ -187,7 +180,7 @@ void Find(RadixPtr Head, RadixPtr C, char* token, const char* path) {
 	}
 
 	int prelen = PrefixFinder(C->string, token, C->len, toklen);
-//	printf("Headstr: %s, token: %s \n",Head->string, token);
+
 	if (prelen == 0) {
 
 		Find(Head, C->Next, token, path);
@@ -201,7 +194,6 @@ void Find(RadixPtr Head, RadixPtr C, char* token, const char* path) {
 		newtok[strlen(newtok)] = '\0';
 		if (prelen < C->len) {
 			NodeCutter(C, prelen);
-			printf("Cstring: %s\n", C->string);
 
 		}
 		//	Head = C;
@@ -255,7 +247,7 @@ void PreorderTraverse(RadixPtr Head, char* token, SortedListPtr Output,
 	}
 
 	if (Head->Next != NULL) {
-		printf("%s has a next \n", Head->string);
+
 		PreorderTraverse(Head->Next, token, Output, sF);
 	}
 	return;

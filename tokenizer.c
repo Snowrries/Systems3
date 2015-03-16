@@ -19,7 +19,7 @@ TokenizerT *TKCreate(const char * filename) {
 
 	}
 
-	printf("%s\n", tk->wholefile);
+
 	int regerrorcode = regcomp(&(tk->rx), REGEXPAT, REG_EXTENDED | REG_ICASE);
 	if (regerrorcode) {
 		printf("Regex failed with error code: %d\n", regerrorcode);
