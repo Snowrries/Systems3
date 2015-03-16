@@ -116,9 +116,6 @@ void dirTrav(const char* path, RadixPtr root, int n) {
 		TKDestroy(stuff);
 		return;
 
-	} else {
-		printf("File is Binary \n");
-		return;
 	}
 
 	if (path == NULL) {
