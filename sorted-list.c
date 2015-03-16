@@ -90,7 +90,7 @@ int SLInsert(SortedListPtr list, void *newObj) {
 	} else {
 
 		Comparator = SLGetItem(Iter);
-	  	if(Comparator !=NULL){
+	  	
 		int a = list->Compare(Comparator, newObj);
 		printf("Compare: %d\n", a);
 		while (a < 0 && Comparator != NULL) { //If the compare function returns >0 means if newObj is less than or equal to compared object (List is ordered from largest to smallest
@@ -104,8 +104,7 @@ int SLInsert(SortedListPtr list, void *newObj) {
 
 			SLDestroyIterator(Iter);
 			return 0;
-		} 
-		}else {
+		} else {
 			newNode->next = Iter->Node;
 			incrementreference(newNode);
 			if (prevNode != NULL) {
