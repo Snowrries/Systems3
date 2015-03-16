@@ -82,6 +82,10 @@ int CompareBucket(void* K, void* I) {
 
 	IndexPtr Key = (IndexPtr) K;
 	IndexPtr Insert = (IndexPtr) I;
+
+	if (Key == NULL) {
+		return -1;
+	}
 	int result = strcmp(Key->file, Insert->file);
 	if (result == 0) {
 		Key->freq++;
@@ -149,12 +153,12 @@ void NodeCutter(RadixPtr Node, int length) {
 	Node->Child = SuffixNode;
 	Node->Index = NULL;
 	Node->len = strlen(prefix);
-	//	printf("suffnode: %s\n", SuffixNode->string);
+//	printf("suffnode: %s\n", SuffixNode->string);
 	printf("prelen: %d, nodelen: %d\n", length, Node->len);
 	printf("suffix: %s\nprefix: %s\n", suffix, prefix);
 
-	//	free(suffix);
-	//	free(prefix);
+//	free(suffix);
+//	free(prefix);
 }
 
 void Find(RadixPtr Head, RadixPtr C, char* token, const char* path) {
@@ -170,6 +174,10 @@ void Find(RadixPtr Head, RadixPtr C, char* token, const char* path) {
 		if (*Result == NULL) {
 
 			(*Result) = (SLCreate(compare, delete));
+			if ((*Result) == NULL) {
+				printf("Failed to Create Bucket \n");
+				return;
+			}
 
 		}
 
@@ -179,7 +187,7 @@ void Find(RadixPtr Head, RadixPtr C, char* token, const char* path) {
 	}
 
 	int prelen = PrefixFinder(C->string, token, C->len, toklen);
-	//	printf("Headstr: %s, token: %s \n",Head->string, token);
+//	printf("Headstr: %s, token: %s \n",Head->string, token);
 	if (prelen == 0) {
 
 		Find(Head, C->Next, token, path);
@@ -206,7 +214,12 @@ void Find(RadixPtr Head, RadixPtr C, char* token, const char* path) {
 	Result = InsertToken(Head, token);
 	if (*Result == NULL) {
 		(*Result) = (SLCreate(compare, delete));
+		if ((*Result) == NULL) {
+			printf("Failed to Create Bucket \n");
+			return;
+		}
 	}
+
 	newIndex = IndexNodeCreate(path);
 	SLInsert(*Result, newIndex);
 	return;
