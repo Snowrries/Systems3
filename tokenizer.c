@@ -1,16 +1,4 @@
 #include "tokenizer.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <errno.h>  /* for errno */
-#include <string.h> /* for strerror */
-/* Borrowed from ascmagic.c in the file source tree */
-
-#define Fii 0   /* character never appears in text */
-#define Tii 1   /* character appears in plain ASCII text */
-#define Iii 2   /* character appears in ISO-8859 text */
-#define Xii 3   /* character appears in non-ISO extended ASCII (Mac, IBM PC) */
-
-#define FR_BUFSIZ 4096
 
 TokenizerT *TKCreate(const char * filename) {
 	char *desu;
